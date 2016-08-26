@@ -1,0 +1,2 @@
+# BaseAdapterNoDataBinding
+基础的RecyclerView Adapter封装类
