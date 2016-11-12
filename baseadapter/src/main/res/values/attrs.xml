@@ -9,5 +9,8 @@
         <attr name="sidebarRadius" format="dimension"/>
         <attr name="sidebarBallRadius" format="dimension"/>
         <attr name="sidebarLetters" format="reference"/>
+        <attr name="sidebarLettersMaxLength" format="integer"/>
     </declare-styleable>
+
+    <bool name="is_rtl">true</bool>
 </resources>

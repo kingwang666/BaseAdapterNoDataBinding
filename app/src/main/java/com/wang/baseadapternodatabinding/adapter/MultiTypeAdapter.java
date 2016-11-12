@@ -13,14 +13,14 @@ import com.wang.baseadapternodatabinding.R;
  * Created on 2016/6/12.
  * Author: wang
  */
-public class MainAdapter extends BaseRecyclerViewAdapter {
+public class MultiTypeAdapter extends BaseRecyclerViewAdapter {
 
     public static final int TYPE_CAT = 1;
     public static final int TYPE_DOG = 2;
 
 
 
-    public MainAdapter(RecyclerViewItemArray itemArray, LoadingDelegate.OnRequestMoreListener listener) {
+    public MultiTypeAdapter(RecyclerViewItemArray itemArray, LoadingDelegate.OnRequestMoreListener listener) {
         super(itemArray);
         delegatesManager.addDelegate(TYPE_CAT, new CatDelegate());
         delegatesManager.addDelegate(TYPE_DOG, new DogDelegate());

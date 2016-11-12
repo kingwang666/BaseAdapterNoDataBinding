@@ -10,7 +10,9 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -50,6 +52,7 @@ public class WaveSideBarView extends View {
     private int mHeight;
     private int mItemHeight;
     private int mPadding;
+    private int mLettersMaxLength;
 
     // 波浪路径
     private Path mWavePath = new Path();
@@ -92,9 +95,33 @@ public class WaveSideBarView extends View {
 
     private void init(Context context, AttributeSet attrs) {
 
-        mTextColor = Color.parseColor("#969696");
-        mWaveColor = Color.parseColor("#be69be91");
-        mTextColorChoose = Color.WHITE;
+        TypedValue primaryColorTypedValue = new TypedValue();
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                context.getTheme().resolveAttribute(android.R.attr.colorAccent, primaryColorTypedValue, true);
+                mTextColor = primaryColorTypedValue.data;
+                mTextColorChoose = mTextColor;
+            } else {
+                throw new RuntimeException("SDK_INT less than LOLLIPOP");
+            }
+        } catch (Exception e) {
+            try {
+                int colorAccentId = getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
+                if (colorAccentId != 0) {
+                    context.getTheme().resolveAttribute(colorAccentId, primaryColorTypedValue, true);
+                    mTextColor = primaryColorTypedValue.data;
+                    mTextColorChoose = mTextColor;
+                } else {
+                    throw new RuntimeException("colorPrimary not found");
+                }
+            } catch (Exception e1) {
+                mTextColor = Color.parseColor("#969696");
+                mTextColorChoose = Color.WHITE;
+            }
+        }
+
+        mWaveColor = ContextCompat.getColor(context, R.color.wave_color);
+
         mTextSize = context.getResources().getDimensionPixelSize(R.dimen.textSize_sidebar);
         mLargeTextSize = context.getResources().getDimensionPixelSize(R.dimen.large_textSize_sidebar);
         mPadding = context.getResources().getDimensionPixelSize(R.dimen.textSize_sidebar_padding);
@@ -107,15 +134,16 @@ public class WaveSideBarView extends View {
             mWaveColor = a.getColor(R.styleable.WaveSideBarView_sidebarBackgroundColor, mWaveColor);
             mRadius = a.getDimensionPixelSize(R.styleable.WaveSideBarView_sidebarRadius, context.getResources().getDimensionPixelSize(R.dimen.radius_sidebar));
             mBallRadius = a.getDimensionPixelSize(R.styleable.WaveSideBarView_sidebarBallRadius, context.getResources().getDimensionPixelSize(R.dimen.ball_radius_sidebar));
+            mLettersMaxLength = a.getInteger(R.styleable.WaveSideBarView_sidebarLettersMaxLength, 1);
             CharSequence[] letters = a.getTextArray(R.styleable.WaveSideBarView_sidebarLetters);
+            mLetters = new ArrayList<>();
             if (letters != null) {
-                mLetters = new ArrayList<>();
                 for (CharSequence letter : letters){
                     mLetters.add(letter.toString());
                 }
             }
             else {
-                mLetters = Arrays.asList(context.getResources().getStringArray(R.array.waveSideBarLetters));
+                mLetters.addAll(Arrays.asList(context.getResources().getStringArray(R.array.waveSideBarLetters)));
             }
             a.recycle();
         }
@@ -179,7 +207,7 @@ public class WaveSideBarView extends View {
         mHeight = MeasureSpec.getSize(heightMeasureSpec);
         mWidth = getWidth();
         mItemHeight = (mHeight - mPadding) / mLetters.size();
-        mPosX = mWidth - 1.6f * mTextSize;
+        mPosX = mWidth - (1.1f + (float) mLettersMaxLength / 2) * mTextSize;
     }
 
     @Override
@@ -202,8 +230,8 @@ public class WaveSideBarView extends View {
     private void drawLetters(Canvas canvas) {
 
         RectF rectF = new RectF();
-        rectF.left = mPosX - mTextSize;
-        rectF.right = mPosX + mTextSize;
+        rectF.left = mPosX - mTextSize * ((float)mLettersMaxLength + 1) / 2;
+        rectF.right = mPosX + mTextSize * ((float)mLettersMaxLength + 1) / 2;
         rectF.top = mTextSize / 2;
         rectF.bottom = mHeight - mTextSize / 2;
 
@@ -252,6 +280,7 @@ public class WaveSideBarView extends View {
             // 绘制提示字符
             if (mRatio >= 0.9f) {
                 String target = mLetters.get(mChoose);
+                mTextPaint.setTextSize(mLargeTextSize / target.length());
                 Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
                 float baseline = Math.abs(-fontMetrics.bottom - fontMetrics.top);
                 float x = mBallCentreX;
@@ -339,6 +368,16 @@ public class WaveSideBarView extends View {
     public void setLetters(List<String> letters) {
         this.mLetters = letters;
         invalidate();
+    }
+
+    public void add(String letters) {
+        mLetters.add(letters);
+        requestLayout();
+    }
+
+    public void remove(String letters) {
+        mLetters.remove(letters);
+        requestLayout();
     }
 
     public interface OnTouchLetterChangeListener {

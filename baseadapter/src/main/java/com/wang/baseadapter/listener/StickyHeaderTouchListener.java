@@ -50,9 +50,6 @@ public class StickyHeaderTouchListener implements RecyclerView.OnItemTouchListen
                 if (mOnHeaderClickListener != null){
                     mOnHeaderClickListener.onHeader(mDecor.findCurrentHeaderViewType(), position);
                 }
-                if (position == 0){
-                    mDecor.bindViewHolder();
-                }
             }
             return position != -1;
         }

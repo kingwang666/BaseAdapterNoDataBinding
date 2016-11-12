@@ -22,6 +22,6 @@ public class Chapter {
         this.name = name;
         this.sectionSize = sectionSize;
         this.sections = new ArrayList<>(sectionSize);
-        this.isOpen = false;
+        this.isOpen = true;
     }
 }

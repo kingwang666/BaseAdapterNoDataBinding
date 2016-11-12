@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@android:color/holo_blue_light"
-    android:orientation="horizontal">
+    android:background="@color/wave_color">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/name_tv"
@@ -18,7 +17,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/colorAccent"
+        android:background="@color/dividerColor"
         android:layout_gravity="bottom"/>
-
 </FrameLayout>

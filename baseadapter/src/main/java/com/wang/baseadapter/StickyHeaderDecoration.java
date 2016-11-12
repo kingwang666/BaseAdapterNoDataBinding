@@ -89,12 +89,6 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         return -1;
     }
 
-    public void bindViewHolder() {
-//        if (mAdapter != null && mStickyViewHolder != null){
-//            mAdapter.onBindViewHolder(mStickyViewHolder, mHeaderPosition);
-//        }
-    }
-
     public int findCurrentHeaderViewType(){
         return mCurrentItemType;
     }
@@ -106,9 +100,13 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         if (layoutManager == null || layoutManager.getChildCount() <= 0) {
             return;
         }
-        int firstVisiblePosition = ((RecyclerView.LayoutParams) layoutManager.getChildAt(0).getLayoutParams()).getViewAdapterPosition();
+        View firstVisibleItemView = layoutManager.getChildAt(0);
+        int firstVisiblePosition = ((RecyclerView.LayoutParams) firstVisibleItemView.getLayoutParams()).getViewAdapterPosition();
         int headerPosition = findPinnedHeaderPosition(parent, firstVisiblePosition);
-
+        if (headerPosition == -1 || (headerPosition == firstVisiblePosition && firstVisibleItemView.getTop() == 0)){
+            resetPinnedHeader();
+            return;
+        }
         if (headerPosition >= 0 && mHeaderPosition != headerPosition) {
             mHeaderPosition = headerPosition;
             int viewType = mAdapter.getItemViewType(headerPosition);
@@ -196,6 +194,7 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         mHeaderPosition = -1;
         mCurrentItemType = -1;
         mStickyView = null;
+        mStickyViewHolder = null;
     }
 
     public void registerTypePinnedHeader(int itemType, PinnedHeaderCreator pinnedHeaderCreator) {
