@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:background="@color/dividerColor">
 
     <TextView
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="you are dog"/>
+        android:text="you are dog"
+        android:layout_gravity="center_vertical"/>
 
 </LinearLayout>
