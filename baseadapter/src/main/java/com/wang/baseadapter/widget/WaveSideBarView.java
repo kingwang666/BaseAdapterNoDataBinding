@@ -48,6 +48,7 @@ public class WaveSideBarView extends View {
     private int mTextColor;
     private int mWaveColor;
     private int mTextColorChoose;
+    private int mBarColor;
     private int mWidth;
     private int mHeight;
     private int mItemHeight;
@@ -115,12 +116,13 @@ public class WaveSideBarView extends View {
                     throw new RuntimeException("colorPrimary not found");
                 }
             } catch (Exception e1) {
-                mTextColor = Color.parseColor("#969696");
+                mTextColor = ContextCompat.getColor(context, R.color.side_bar_text_color);
                 mTextColorChoose = Color.WHITE;
             }
         }
 
-        mWaveColor = ContextCompat.getColor(context, R.color.wave_color);
+        mWaveColor = ContextCompat.getColor(context, R.color.side_bar_wave_color);
+        mBarColor = ContextCompat.getColor(context, R.color.side_bar_background);
 
         mTextSize = context.getResources().getDimensionPixelSize(R.dimen.textSize_sidebar);
         mLargeTextSize = context.getResources().getDimensionPixelSize(R.dimen.large_textSize_sidebar);
@@ -131,7 +133,8 @@ public class WaveSideBarView extends View {
             mTextColorChoose = a.getColor(R.styleable.WaveSideBarView_sidebarChooseTextColor, mTextColorChoose);
             mTextSize = a.getDimension(R.styleable.WaveSideBarView_sidebarTextSize, mTextSize);
             mLargeTextSize = a.getDimension(R.styleable.WaveSideBarView_sidebarLargeTextSize, mLargeTextSize);
-            mWaveColor = a.getColor(R.styleable.WaveSideBarView_sidebarBackgroundColor, mWaveColor);
+            mWaveColor = a.getColor(R.styleable.WaveSideBarView_sidebarWaveColor, mWaveColor);
+            mBarColor = a.getColor(R.styleable.WaveSideBarView_sidebarBackgroundColor, mBarColor);
             mRadius = a.getDimensionPixelSize(R.styleable.WaveSideBarView_sidebarRadius, context.getResources().getDimensionPixelSize(R.dimen.radius_sidebar));
             mBallRadius = a.getDimensionPixelSize(R.styleable.WaveSideBarView_sidebarBallRadius, context.getResources().getDimensionPixelSize(R.dimen.ball_radius_sidebar));
             mLettersMaxLength = a.getInteger(R.styleable.WaveSideBarView_sidebarLettersMaxLength, 1);
@@ -237,7 +240,7 @@ public class WaveSideBarView extends View {
 
         mLettersPaint.reset();
         mLettersPaint.setStyle(Paint.Style.FILL);
-        mLettersPaint.setColor(Color.parseColor("#F9F9F9"));
+        mLettersPaint.setColor(mBarColor);
         mLettersPaint.setAntiAlias(true);
         canvas.drawRoundRect(rectF, mTextSize, mTextSize, mLettersPaint);
 
