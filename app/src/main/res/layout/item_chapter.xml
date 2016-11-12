@@ -3,15 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/side_bar_wave_color">
+    android:background="@drawable/clickable_transparent_selector">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingLeft="16dp"
-        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textColor="@android:color/white"
+        android:background="@color/side_bar_wave_color"
         android:textSize="16sp"/>
 
     <View

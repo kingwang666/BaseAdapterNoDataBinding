@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.widget.Toast;
 
 import com.wang.baseadapter.StickyHeaderDecoration;
 import com.wang.baseadapter.listener.OnHeaderClickListener;
@@ -46,7 +47,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
         mRecyclerView.addItemDecoration(decoration);
         mRecyclerView.addOnItemTouchListener(new StickyHeaderTouchListener(this, decoration, this));
         mRecyclerView.setItemAnimator(new MyDefaultItemAnimator());
-        new GravitySnapHelper(Gravity.TOP).attachToRecyclerView(mRecyclerView);
+//        new GravitySnapHelper(Gravity.TOP).attachToRecyclerView(mRecyclerView);
         mSideBarView.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
@@ -112,12 +113,15 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
                 onChapterClick(position);
                 break;
             case StickyHeaderAdapter.TYPE_SECTION:
+                Section section = (Section) mItemArray.get(position).getData();
+                Toast.makeText(StickyHeaderActivity.this, section.name, Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
     private void onChapterClick(int position) {
         Chapter chapter = (Chapter) mItemArray.get(position).getData();
+        Toast.makeText(StickyHeaderActivity.this, chapter.name, Toast.LENGTH_SHORT).show();
         if (chapter.isOpen) {
             chapter.isOpen = false;
 //            mRecyclerView.getAdapter().notifyItemChanged(position);
@@ -125,6 +129,9 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
 //            mRecyclerView.getAdapter().notifyItemRangeRemoved(position + 1, chapter.sectionSize);
             mRecyclerView.getAdapter().notifyDataSetChanged();
             mRecyclerView.smoothScrollToPosition(position);
+//            LinearLayoutManager mLayoutManager =
+//                    (LinearLayoutManager) mRecyclerView.getLayoutManager();
+//            mLayoutManager.scrollToPositionWithOffset(position, 0);
         } else {
             chapter.isOpen = true;
             mRecyclerView.getAdapter().notifyItemChanged(position);

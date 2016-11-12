@@ -4,11 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
+public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
     private int mHeaderPosition;
     private int mCurrentItemType;
     private int mStickyHeaderTop;
@@ -44,14 +45,17 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         createPinnedHeader(parent);
 
         if (mStickyView != null) {
-            int headerEndAt = mStickyView.getTop() + mStickyView.getHeight();
-            View v = parent.findChildViewUnder(c.getWidth() / 2, headerEndAt + 1);
-
-            if (isPinnedView(parent, v)) {
+            View v = parent.findChildViewUnder(c.getWidth() / 2, mStickyView.getHeight() + 0.5f);
+//            View firstVisibleItemView = parent.getLayoutManager().getChildAt(0);
+//            int firstVisiblePosition = ((RecyclerView.LayoutParams) firstVisibleItemView.getLayoutParams()).getViewAdapterPosition();
+            if (isStickyView(parent, v)) {
                 mStickyHeaderTop = v.getTop() - mStickyView.getHeight();
+                Log.d("fuck", "true stick top " + mStickyHeaderTop);
             } else {
                 mStickyHeaderTop = 0;
+                Log.d("fuck", "stick top " + mStickyHeaderTop);
             }
+
 
             mClipBounds = c.getClipBounds();
             mClipBounds.top = mStickyHeaderTop + mStickyView.getHeight();
@@ -88,12 +92,12 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         return -1;
     }
 
-    public int findCurrentHeaderViewType(){
+    public int findCurrentHeaderViewType() {
         return mCurrentItemType;
     }
 
     private void createPinnedHeader(RecyclerView parent) {
-        updatePinnedHeader(parent);
+        updateStickyHeader(parent);
 
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager == null || layoutManager.getChildCount() <= 0) {
@@ -101,8 +105,13 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         }
         View firstVisibleItemView = layoutManager.getChildAt(0);
         int firstVisiblePosition = ((RecyclerView.LayoutParams) firstVisibleItemView.getLayoutParams()).getViewAdapterPosition();
-        int headerPosition = findPinnedHeaderPosition(parent, firstVisiblePosition);
-        if (headerPosition == -1 || (headerPosition == firstVisiblePosition && firstVisibleItemView.getTop() == 0)){
+        if (firstVisibleItemView.getTop() + firstVisibleItemView.getHeight() == 0){
+            firstVisibleItemView = layoutManager.getChildAt(1);
+            firstVisiblePosition++;
+        }
+        int headerPosition = findStickyHeaderPosition(parent, firstVisiblePosition);
+        Log.d("fuck", "header " + headerPosition + " first " + firstVisiblePosition + " top " + firstVisibleItemView.getTop());
+        if (headerPosition == -1 || (headerPosition == firstVisiblePosition && firstVisibleItemView.getTop() == 0)) {
             resetPinnedHeader();
             return;
         }
@@ -115,7 +124,7 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
 //            if (stickyViewHolder == null){
             mStickyViewHolder = mAdapter.createViewHolder(parent, viewType);
 //            }
-            mAdapter.bindViewHolder(mStickyViewHolder, headerPosition);
+            mAdapter.onBindViewHolder(mStickyViewHolder, headerPosition);
             mStickyView = mStickyViewHolder.itemView;
             // read layout parameters
             ViewGroup.LayoutParams layoutParams = mStickyView.getLayoutParams();
@@ -144,14 +153,14 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         }
     }
 
-    private int findPinnedHeaderPosition(RecyclerView parent, int fromPosition) {
+    private int findStickyHeaderPosition(RecyclerView parent, int fromPosition) {
         if (fromPosition > mAdapter.getItemCount() || fromPosition < 0) {
             return -1;
         }
 
         for (int position = fromPosition; position >= 0; position--) {
             final int viewType = mAdapter.getItemViewType(position);
-            if (isPinnedViewType(parent, position, viewType)) {
+            if (isStickyViewType(parent, position, viewType)) {
                 return position;
             }
         }
@@ -159,22 +168,22 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         return -1;
     }
 
-    private boolean isPinnedViewType(RecyclerView parent, int adapterPosition, int viewType) {
-        StickyHeaderCreator stickyHeaderCreator =  mTypeStickyHeaderFactories.get(viewType);
+    private boolean isStickyViewType(RecyclerView parent, int adapterPosition, int viewType) {
+        StickyHeaderCreator stickyHeaderCreator = mTypeStickyHeaderFactories.get(viewType);
 
         return stickyHeaderCreator != null && stickyHeaderCreator.create(parent, adapterPosition);
     }
 
-    private boolean isPinnedView(RecyclerView parent, View v) {
+    private boolean isStickyView(RecyclerView parent, View v) {
         int position = parent.getChildAdapterPosition(v);
         if (position == RecyclerView.NO_POSITION) {
             return false;
         }
 
-        return isPinnedViewType(parent, position, mAdapter.getItemViewType(position));
+        return isStickyViewType(parent, position, mAdapter.getItemViewType(position));
     }
 
-    private void updatePinnedHeader(RecyclerView parent) {
+    private void updateStickyHeader(RecyclerView parent) {
         RecyclerView.Adapter adapter = parent.getAdapter();
         if (mAdapter != adapter || mIsAdapterDataChanged) {
             resetPinnedHeader();
@@ -208,7 +217,6 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
             }
         });
     }
-
 
 
     public interface StickyHeaderCreator {
