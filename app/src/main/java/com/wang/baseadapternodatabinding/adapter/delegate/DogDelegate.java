@@ -1,31 +1,31 @@
-package com.wang.baseadapternodatabinding;
+package com.wang.baseadapternodatabinding.adapter.delegate;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
 import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapternodatabinding.R;
 import com.wang.baseadapternodatabinding.model.Dog;
 
 /**
- * Created by jiudeng009 on 2016/6/12.
+ * Created by wang
+ * on 2016/6/12
  */
-public class DogDelegate implements AdapterDelegate {
+public class DogDelegate implements AdapterDelegate<DogDelegate.DogViewHolder> {
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dog, parent, false);
         return new DogViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder holder, int position) {
-        DogViewHolder vh = (DogViewHolder) holder;
+    public void onBindViewHolder(RecyclerViewItemArray itemArray, DogViewHolder vh, int position) {
         Dog dog = (Dog) itemArray.get(position).getData();
         vh.nameTV.setText("you are dog " + dog.name);
     }

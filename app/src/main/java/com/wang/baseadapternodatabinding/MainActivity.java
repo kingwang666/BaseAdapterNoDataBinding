@@ -3,13 +3,13 @@ package com.wang.baseadapternodatabinding;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 
 import com.wang.baseadapter.delegate.LoadingDelegate;
 import com.wang.baseadapter.model.ItemData;
 import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapternodatabinding.adapter.MainAdapter;
 import com.wang.baseadapternodatabinding.model.Cat;
 import com.wang.baseadapternodatabinding.model.Dog;
 

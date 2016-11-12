@@ -123,7 +123,7 @@ public class RecyclerViewItemArray extends ArrayList<ItemData> {
     public int removeAllType(int type) {
         int count = 0;
         Iterator<ItemData> iterator = iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             ItemData item = iterator.next();
             if (item.getDataType() == type) {
                 iterator.remove();
@@ -135,9 +135,10 @@ public class RecyclerViewItemArray extends ArrayList<ItemData> {
 
     /**
      * 在type类型下面添加多个数据
-     * @param type 类型
+     *
+     * @param type  类型
      * @param datas 数据
-     * @param <E> 数据类型
+     * @param <E>   数据类型
      * @return 数据数目
      */
     public <E> int addAllType(int type, List<E> datas) {
@@ -153,9 +154,10 @@ public class RecyclerViewItemArray extends ArrayList<ItemData> {
 
     /**
      * 在列表最后添加多个数据
-     * @param type 类型
+     *
+     * @param type  类型
      * @param datas 数据
-     * @param <E> 数据类型
+     * @param <E>   数据类型
      * @return 数据数目
      */
     public <E> int addAllAtLast(int type, List<E> datas) {
@@ -169,10 +171,11 @@ public class RecyclerViewItemArray extends ArrayList<ItemData> {
 
     /**
      * 在指定位置添加多个数据
+     *
      * @param position 开始插入数据位置
-     * @param type 类型
-     * @param datas 数据
-     * @param <E> 数据类型
+     * @param type     类型
+     * @param datas    数据
+     * @param <E>      数据类型
      * @return 数据数目
      */
     public <E> int addAllAtPosition(int position, int type, List<E> datas) {
@@ -180,6 +183,20 @@ public class RecyclerViewItemArray extends ArrayList<ItemData> {
         for (E e : datas) {
             add(position + count, new ItemData<>(type, e));
             count++;
+        }
+        return count;
+    }
+
+    /**
+     * 在指定位置移除指定数量数据类型数据
+     *
+     * @param position 开始移除数据位置
+     * @param count    移除的数量
+     * @return 移除的数量
+     */
+    public int removeAllAtPosition(int position, int count) {
+        if (count > 0) {
+            removeRange(position, position + count);
         }
         return count;
     }

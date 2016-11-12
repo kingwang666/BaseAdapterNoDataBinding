@@ -15,7 +15,7 @@ import com.wang.baseadapter.model.RecyclerViewItemArray;
  * Author: wang
  * 默认加载更多代理
  */
-public class LoadingDelegate implements AdapterDelegate {
+public class LoadingDelegate implements AdapterDelegate<LoadingDelegate.NoMoreViewHolder> {
 
     private OnRequestMoreListener mRequestMoreListener;
     /**
@@ -42,14 +42,13 @@ public class LoadingDelegate implements AdapterDelegate {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NoMoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false);
         return new NoMoreViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder holder, int position) {
-        NoMoreViewHolder vh = (NoMoreViewHolder) holder;
+    public void onBindViewHolder(RecyclerViewItemArray itemArray, NoMoreViewHolder vh, int position) {
         if (canLoadMore()){
             vh.mProgress.setVisibility(View.VISIBLE);
             vh.mTipTV.setText("正在加载更多...");

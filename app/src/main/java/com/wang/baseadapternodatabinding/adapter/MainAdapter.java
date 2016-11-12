@@ -1,9 +1,13 @@
-package com.wang.baseadapternodatabinding;
+package com.wang.baseadapternodatabinding.adapter;
 
 
 import com.wang.baseadapter.BaseRecyclerViewAdapter;
 import com.wang.baseadapter.delegate.LoadingDelegate;
 import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapternodatabinding.adapter.delegate.CatDelegate;
+import com.wang.baseadapternodatabinding.adapter.delegate.DogDelegate;
+import com.wang.baseadapternodatabinding.adapter.delegate.EmptyDelegate;
+import com.wang.baseadapternodatabinding.R;
 
 /**
  * Created on 2016/6/12.

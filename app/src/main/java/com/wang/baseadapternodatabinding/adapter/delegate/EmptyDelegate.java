@@ -1,4 +1,4 @@
-package com.wang.baseadapternodatabinding;
+package com.wang.baseadapternodatabinding.adapter.delegate;
 
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
@@ -8,12 +8,13 @@ import android.widget.ImageView;
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
 import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapternodatabinding.R;
 
 /**
  * Created on 2016/6/13.
  * Author: wang
  */
-public class EmptyDelegate implements AdapterDelegate {
+public class EmptyDelegate implements AdapterDelegate<EmptyDelegate.EmptyViewHolder> {
 
     @DrawableRes
     private int resId;
@@ -23,12 +24,12 @@ public class EmptyDelegate implements AdapterDelegate {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EmptyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new EmptyViewHolder(parent, resId);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewItemArray itemArray, EmptyViewHolder holder, int position) {
 
     }
 

@@ -7,24 +7,24 @@ import com.wang.baseadapter.model.RecyclerViewItemArray;
 
 
 
-public interface AdapterDelegate {
+public interface AdapterDelegate<VH extends RecyclerView.ViewHolder> {
 
 
     /**
-     * Creates the  {@link RecyclerView.ViewHolder} for the given data source item
+     * Creates the  {@link VH} for the given data source item
      *
      * @param parent The ViewGroup parent of the given datasource
      * @param viewType the datasource type
-     * @return The new instantiated {@link RecyclerView.ViewHolder}
+     * @return The new instantiated {@link VH}
      */
-    RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
+    VH onCreateViewHolder(ViewGroup parent, int viewType);
 
     /**
-     * Called to bind the {@link RecyclerView.ViewHolder} to the item of the datas source set
+     * Called to bind the {@link VH} to the item of the datas source set
      *
      * @param itemArray the recycler items
      * @param position The position in the datasource
-     * @param holder   The {@link RecyclerView.ViewHolder} to bind
+     * @param vh   The {@link VH} to bind
      */
-    void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder holder, int position);
+    void onBindViewHolder(RecyclerViewItemArray itemArray, VH vh, int position);
 }

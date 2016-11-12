@@ -31,7 +31,7 @@ public class AdapterDelegatesManager {
     /**
      * Map for ViewType to AdapterDeleage
      */
-    SparseArrayCompat<AdapterDelegate> delegates = new SparseArrayCompat<>();
+    private SparseArrayCompat<AdapterDelegate> delegates = new SparseArrayCompat<>();
 
     /**
      * Adds an {@link AdapterDelegate}.
@@ -174,12 +174,13 @@ public class AdapterDelegatesManager {
      * Must be called from{@link RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)}
      *
      * @param itemArray Adapter's data source
-     * @param holder    the ViewHolder to bind
+     * @param vh    the ViewHolder to bind
      * @param position  the position in data source  @throws NullPointerException if no AdapterDelegate has been registered for ViewHolders
      *                  viewType
      */
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder holder, int position) {
-        getDelegateForViewType(holder.getItemViewType()).onBindViewHolder(itemArray, holder, position);
+    @SuppressWarnings("unchecked")
+    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder vh, int position) {
+        getDelegateForViewType(vh.getItemViewType()).onBindViewHolder(itemArray, vh, position);
     }
 
 
