@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
     private View mStickyView;
     private RecyclerView.ViewHolder mStickyViewHolder;
 
-    private final SparseArray<PinnedHeaderCreator> mTypePinnedHeaderFactories = new SparseArray<>();
+    private final SparseArray<StickyHeaderCreator> mTypeStickyHeaderFactories = new SparseArray<>();
     private final RecyclerView.AdapterDataObserver mAdapterDataObserver = new RecyclerView.AdapterDataObserver() {
         @Override
         public void onChanged() {
@@ -161,9 +160,9 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
     }
 
     private boolean isPinnedViewType(RecyclerView parent, int adapterPosition, int viewType) {
-        PinnedHeaderCreator pinnedHeaderCreator =  mTypePinnedHeaderFactories.get(viewType);
+        StickyHeaderCreator stickyHeaderCreator =  mTypeStickyHeaderFactories.get(viewType);
 
-        return pinnedHeaderCreator != null && pinnedHeaderCreator.create(parent, adapterPosition);
+        return stickyHeaderCreator != null && stickyHeaderCreator.create(parent, adapterPosition);
     }
 
     private boolean isPinnedView(RecyclerView parent, View v) {
@@ -197,12 +196,12 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
         mStickyViewHolder = null;
     }
 
-    public void registerTypePinnedHeader(int itemType, PinnedHeaderCreator pinnedHeaderCreator) {
-        mTypePinnedHeaderFactories.put(itemType, pinnedHeaderCreator);
+    public void registerTypePinnedHeader(int itemType, StickyHeaderCreator stickyHeaderCreator) {
+        mTypeStickyHeaderFactories.put(itemType, stickyHeaderCreator);
     }
 
     public void registerTypePinnedHeader(int itemType) {
-        mTypePinnedHeaderFactories.put(itemType, new PinnedHeaderCreator() {
+        mTypeStickyHeaderFactories.put(itemType, new StickyHeaderCreator() {
             @Override
             public boolean create(RecyclerView parent, int adapterPosition) {
                 return true;
@@ -212,7 +211,7 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration{
 
 
 
-    public interface PinnedHeaderCreator {
+    public interface StickyHeaderCreator {
         boolean create(RecyclerView parent, int adapterPosition);
     }
 }
