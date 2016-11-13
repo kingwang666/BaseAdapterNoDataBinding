@@ -14,7 +14,6 @@
 [RecyclerViewSnap](https://github.com/rubensousa/RecyclerViewSnap)  
 ## How to use ##
 ### user it for multiple type and load more ###
-   
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_type);
@@ -54,7 +53,6 @@
             }
         }, 2000);
     }
-      
 adpter  
 
 
