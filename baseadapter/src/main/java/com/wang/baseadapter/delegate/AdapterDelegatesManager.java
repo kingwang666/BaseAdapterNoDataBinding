@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2015 Hannes Dorfmann.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
 package com.wang.baseadapter.delegate;
 
 import android.support.annotation.NonNull;
@@ -144,7 +128,7 @@ public class AdapterDelegatesManager {
 
 
     /**
-     * This method must be called in {@link RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)}
+     * This method must be called
      *
      * @param parent   the parent
      * @param viewType the view type
@@ -171,7 +155,7 @@ public class AdapterDelegatesManager {
     }
 
     /**
-     * Must be called from{@link RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)}
+     * Must be called
      *
      * @param itemArray Adapter's data source
      * @param vh    the ViewHolder to bind
