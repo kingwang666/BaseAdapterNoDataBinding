@@ -14,6 +14,7 @@
 [RecyclerViewSnap](https://github.com/rubensousa/RecyclerViewSnap)  
 ## How to use ##
 ### user it for multiple type and load more ###
+```
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_type);
@@ -53,9 +54,9 @@
             }
         }, 2000);
     }
+```
 adpter  
-
-
+```
     public static final int TYPE_CAT = 1;
     public static final int TYPE_DOG = 2;
 
@@ -66,9 +67,11 @@ adpter
         delegatesManager.addDelegate(TYPE_LOADING, new LoadingDelegate(listener, true));
         delegatesManager.addDelegate(TYPE_EMPTY, new EmptyDelegate(R.mipmap.ic_launcher));
     }
+```
 
 ### use sticky header and side bar ###
-        StickyHeaderDecoration decoration = new StickyHeaderDecoration(StickyHeaderAdapter.TYPE_CHAPTER);
+```
+       StickyHeaderDecoration decoration = new StickyHeaderDecoration(StickyHeaderAdapter.TYPE_CHAPTER);
         mRecyclerView.addItemDecoration(decoration);
         mRecyclerView.addOnItemTouchListener(new StickyHeaderTouchListener(this, decoration, this));
         mRecyclerView.setItemAnimator(new MyDefaultItemAnimator());
@@ -91,3 +94,4 @@ adpter
                 }
             }
         });
+```
