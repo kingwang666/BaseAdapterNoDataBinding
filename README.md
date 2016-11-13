@@ -1,18 +1,23 @@
 # BaseAdapterNoDataBinding
 基础的RecyclerView Adapter封装类，支持侧边栏快速跳转，StickyHeader
+
 ## Feature ##
 1. multiple type view
 2. at the bottom of the load more
 3. add WaveSideBar for quick jump list
 4. support snap and sticky header
+
 ## ScreenShot ##
 <img src="screenshot/sticky_header.jpg" width=200></img> <img src="screenshot/multi_type.jpg" width=200></img> <img src="screenshot/load_more.jpg" width=200></img> <img src="screenshot/sticky_header.gif" width=200 ></img>
+
 ## Thanks ##
 [AdapterDelegates](https://github.com/sockeqwe/AdapterDelegates)  
 [WaveSideBar](https://github.com/Solartisan/WaveSideBar)  
 [RecyclerItemDecoration](https://github.com/dinuscxj/RecyclerItemDecoration)  
-[RecyclerViewSnap](https://github.com/rubensousa/RecyclerViewSnap)  
+[RecyclerViewSnap](https://github.com/rubensousa/RecyclerViewSnap)
+
 ## How to use ##
+
 ### user it for multiple type and load more ###
 ```
     protected void onCreate(Bundle savedInstanceState) {
