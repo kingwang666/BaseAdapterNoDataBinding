@@ -1,6 +1,7 @@
 package com.wang.baseadapternodatabinding;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,9 @@ import com.wang.baseadapternodatabinding.adapter.StickyHeaderAdapter;
 import com.wang.baseadapternodatabinding.interfaces.OnRecyclerViewClickListener;
 import com.wang.baseadapternodatabinding.model.Chapter;
 import com.wang.baseadapternodatabinding.model.Section;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by wang
@@ -100,6 +104,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
             }
         }
     }
+
 
     @Override
     public void onHeader(int viewType, int position) {
