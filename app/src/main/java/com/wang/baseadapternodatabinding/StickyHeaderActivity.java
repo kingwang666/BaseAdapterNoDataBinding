@@ -61,10 +61,10 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
                     if (data.getDataType() == StickyHeaderAdapter.TYPE_CHAPTER) {
                         Chapter chapter = (Chapter) data.getData();
                         if (chapter.name.startsWith(letter)) {
-                            LinearLayoutManager mLayoutManager =
-                                    (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                            mLayoutManager.scrollToPositionWithOffset(i, 0);
-//                            smoothMoveToPosition(i);
+//                            LinearLayoutManager mLayoutManager =
+//                                    (LinearLayoutManager) mRecyclerView.getLayoutManager();
+//                            mLayoutManager.scrollToPositionWithOffset(i, 0);
+                            smoothMoveToPosition(i);
                             return;
                         }
                     }
