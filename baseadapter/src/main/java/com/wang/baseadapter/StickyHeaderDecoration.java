@@ -3,12 +3,14 @@ package com.wang.baseadapter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Region;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+
 
 public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
 
@@ -23,7 +25,10 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
     private Rect mClipBounds;
     private RecyclerView.Adapter mAdapter;
     private View mStickyView;
-    private RecyclerView.ViewHolder mStickyViewHolder;
+
+    private Drawable mBackground;
+
+
 
     private final SparseArray<StickyHeaderCreator> mTypeStickyHeaderFactories = new SparseArray<>();
     private final RecyclerView.AdapterDataObserver mAdapterDataObserver = new RecyclerView.AdapterDataObserver() {
@@ -38,10 +43,18 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
         this.mCurrentItemType = -1;
     }
 
+
     public StickyHeaderDecoration(int viewType) {
         this.mHeaderPosition = -1;
         this.mCurrentItemType = -1;
         registerTypePinnedHeader(viewType);
+    }
+
+    public StickyHeaderDecoration(int viewType, Drawable background) {
+        this.mHeaderPosition = -1;
+        this.mCurrentItemType = -1;
+        registerTypePinnedHeader(viewType);
+        mBackground = background;
     }
 
     @Override
@@ -59,8 +72,6 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
                 mStickyHeaderTop = 0;
                 Log.d(TAG, "stick top " + mStickyHeaderTop);
             }
-
-
             mClipBounds = c.getClipBounds();
             mClipBounds.top = mStickyHeaderTop + mStickyView.getHeight();
             c.clipRect(mClipBounds);
@@ -75,6 +86,9 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
             mClipBounds.top = 0;
             c.clipRect(mClipBounds, Region.Op.UNION);
             c.translate(0, mStickyHeaderTop);
+            if (mBackground != null) {
+                mStickyView.setBackground(mBackground);
+            }
             mStickyView.draw(c);
             c.restore();
         }
@@ -100,15 +114,15 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
         return mCurrentItemType;
     }
 
-    private void createPinnedHeader(RecyclerView parent) {
+    protected void createPinnedHeader(RecyclerView parent) {
         updateStickyHeader(parent);
 
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager == null || layoutManager.getChildCount() <= 0) {
             return;
         }
-        int firstVisiblePosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-        int firstCompletelyVisiblePosition = ((LinearLayoutManager)layoutManager).findFirstCompletelyVisibleItemPosition();
+        int firstVisiblePosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+        int firstCompletelyVisiblePosition = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
         int headerPosition = findStickyHeaderPosition(parent, firstVisiblePosition);
         Log.d(TAG, "header " + headerPosition + " first " + firstVisiblePosition + " first completely " + firstCompletelyVisiblePosition);
         if (headerPosition == -1 || (headerPosition == firstCompletelyVisiblePosition)) {
@@ -119,9 +133,18 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
             mHeaderPosition = headerPosition;
             int viewType = mAdapter.getItemViewType(headerPosition);
             mCurrentItemType = viewType;
-            mStickyViewHolder = mAdapter.createViewHolder(parent, viewType);
-            mAdapter.onBindViewHolder(mStickyViewHolder, headerPosition);
-            mStickyView = mStickyViewHolder.itemView;
+
+            RecyclerView.ViewHolder stickyViewHolder = mAdapter.createViewHolder(parent, viewType);
+            if (mAdapter instanceof SwipeStickyAdapter){
+                ((SwipeStickyAdapter) mAdapter).onBindSwipeViewHolder(stickyViewHolder, headerPosition);
+            }
+            else {
+                mAdapter.onBindViewHolder(stickyViewHolder, headerPosition);
+            }
+
+            mStickyView = stickyViewHolder.itemView;
+
+
             // read layout parameters
             ViewGroup.LayoutParams layoutParams = mStickyView.getLayoutParams();
             if (layoutParams == null) {
@@ -198,7 +221,10 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
         mHeaderPosition = -1;
         mCurrentItemType = -1;
         mStickyView = null;
-        mStickyViewHolder = null;
+    }
+
+    public View getStickyView() {
+        return mStickyView;
     }
 
     public void registerTypePinnedHeader(int itemType, StickyHeaderCreator stickyHeaderCreator) {

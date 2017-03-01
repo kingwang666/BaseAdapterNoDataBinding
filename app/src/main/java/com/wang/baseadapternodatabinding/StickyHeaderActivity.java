@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -50,7 +51,14 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
         StickyHeaderDecoration decoration = new StickyHeaderDecoration(StickyHeaderAdapter.TYPE_CHAPTER);
         mRecyclerView.addItemDecoration(decoration);
         mRecyclerView.addOnItemTouchListener(new StickyHeaderTouchListener(this, decoration, this));
-        mRecyclerView.setItemAnimator(new MyDefaultItemAnimator());
+//        mRecyclerView.setItemAnimator(new MyDefaultItemAnimator());
+        DefaultItemAnimator animator = new DefaultItemAnimator() {
+            @Override
+            public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
+                return true;
+            }
+        };
+        mRecyclerView.setItemAnimator(animator);
 //        new GravitySnapHelper(Gravity.TOP).attachToRecyclerView(mRecyclerView);
         mSideBarView.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
             @Override
@@ -129,10 +137,10 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
         Toast.makeText(StickyHeaderActivity.this, chapter.name, Toast.LENGTH_SHORT).show();
         if (chapter.isOpen) {
             chapter.isOpen = false;
-//            mRecyclerView.getAdapter().notifyItemChanged(position);
+            mRecyclerView.getAdapter().notifyItemChanged(position);
             mItemArray.removeAllAtPosition(position + 1, chapter.sectionSize);
-//            mRecyclerView.getAdapter().notifyItemRangeRemoved(position + 1, chapter.sectionSize);
-            mRecyclerView.getAdapter().notifyDataSetChanged();
+            mRecyclerView.getAdapter().notifyItemRangeRemoved(position + 1, chapter.sectionSize);
+//            mRecyclerView.getAdapter().notifyDataSetChanged();
             mRecyclerView.smoothScrollToPosition(position);
 //            LinearLayoutManager mLayoutManager =
 //                    (LinearLayoutManager) mRecyclerView.getLayoutManager();

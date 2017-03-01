@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 
 import com.wang.baseadapter.StickyHeaderDecoration;
 
@@ -35,7 +36,9 @@ public class StickyHeaderTouchListener implements RecyclerView.OnItemTouchListen
     }
 
     @Override
-    public void onTouchEvent(RecyclerView view, MotionEvent e) { /* do nothing? */ }
+    public void onTouchEvent(RecyclerView view, MotionEvent e) {
+
+    }
 
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
@@ -57,6 +60,12 @@ public class StickyHeaderTouchListener implements RecyclerView.OnItemTouchListen
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            int position = mDecor.findHeaderPositionUnder((int)e1.getX(), (int)e1.getY());
+            return position != -1;
         }
     }
 }

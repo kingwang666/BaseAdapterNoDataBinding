@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.wang.baseadapter.model.RecyclerViewItemArray;
 
+import java.util.List;
 
 
 public interface AdapterDelegate<VH extends RecyclerView.ViewHolder> {
@@ -20,11 +21,13 @@ public interface AdapterDelegate<VH extends RecyclerView.ViewHolder> {
     VH onCreateViewHolder(ViewGroup parent, int viewType);
 
     /**
-     * Called to bind the {@link VH} to the item of the datas source set
+     * Called by RecyclerView to display the data at the specified position. This method should
+     * update the contents of the {@link RecyclerView.ViewHolder#itemView} to reflect the item at the given
+     * position.
      *
-     * @param itemArray the recycler items
-     * @param position The position in the datasource
-     * @param vh   The {@link VH} to bind
+     * @param vh The ViewHolder which should be updated to represent the contents of the
+     *        item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
      */
     void onBindViewHolder(RecyclerViewItemArray itemArray, VH vh, int position);
 }

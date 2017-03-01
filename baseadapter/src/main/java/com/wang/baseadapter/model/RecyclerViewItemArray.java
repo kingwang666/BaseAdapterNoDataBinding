@@ -82,7 +82,7 @@ public class RecyclerViewItemArray extends ArrayList<ItemData> {
      */
     public int addAfterLast(int type, ItemData data) {
         int position = findLastTypePosition(type);
-        add(position++, data);
+        add(++position, data);
         return position;
     }
 
