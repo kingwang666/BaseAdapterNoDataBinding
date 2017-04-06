@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.wang.baseadapter.SnappingLinearLayoutManager;
 import com.wang.baseadapter.StickyHeaderDecoration;
 import com.wang.baseadapter.listener.OnHeaderClickListener;
 import com.wang.baseadapter.listener.StickyHeaderTouchListener;
@@ -45,7 +46,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mSideBarView = (WaveSideBarView) findViewById(R.id.side_view);
         initArray();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new SnappingLinearLayoutManager(this));
         mRecyclerView.setAdapter(new StickyHeaderAdapter(mItemArray, this));
 //        mRecyclerView.addOnScrollListener(new RecyclerViewListener());
         StickyHeaderDecoration decoration = new StickyHeaderDecoration(StickyHeaderAdapter.TYPE_CHAPTER);
@@ -72,7 +73,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
 //                            LinearLayoutManager mLayoutManager =
 //                                    (LinearLayoutManager) mRecyclerView.getLayoutManager();
 //                            mLayoutManager.scrollToPositionWithOffset(i, 0);
-                            smoothMoveToPosition(i);
+                            mRecyclerView.smoothScrollToPosition(i);
                             return;
                         }
                     }
@@ -81,23 +82,23 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
         });
     }
 
-    private void smoothMoveToPosition(int n) {
-        mRecyclerView.stopScroll();
-        mIndex = n;
-        LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-        int firstItem = layoutManager.findFirstVisibleItemPosition();
-        int lastItem = layoutManager.findLastVisibleItemPosition();
-        if (n <= firstItem) {
-            mRecyclerView.smoothScrollToPosition(n);
-        } else if (n <= lastItem) {
-            int top = mRecyclerView.getChildAt(n - firstItem).getTop();
-            mRecyclerView.smoothScrollBy(0, top);
-        } else {
-            mRecyclerView.smoothScrollToPosition(n);
-            move = true;
-        }
-
-    }
+//    private void smoothMoveToPosition(int n) {
+//        mRecyclerView.stopScroll();
+//        mIndex = n;
+//        LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+//        int firstItem = layoutManager.findFirstVisibleItemPosition();
+//        int lastItem = layoutManager.findLastVisibleItemPosition();
+//        if (n <= firstItem) {
+//            mRecyclerView.smoothScrollToPosition(n);
+//        } else if (n <= lastItem) {
+//            int top = mRecyclerView.getChildAt(n - firstItem).getTop();
+//            mRecyclerView.smoothScrollBy(0, top);
+//        } else {
+//            mRecyclerView.smoothScrollToPosition(n);
+//            move = true;
+//        }
+//
+//    }
 
 
     private void initArray() {
