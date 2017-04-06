@@ -14,7 +14,7 @@ import com.wang.baseadapternodatabinding.R;
  * on 2016/11/11
  */
 
-public class SpaceDelegate implements AdapterDelegate {
+public class SpaceDelegate extends AdapterDelegate {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

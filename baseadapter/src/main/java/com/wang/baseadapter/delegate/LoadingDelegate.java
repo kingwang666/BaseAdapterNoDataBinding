@@ -15,7 +15,7 @@ import com.wang.baseadapter.model.RecyclerViewItemArray;
  * Author: wang
  * 默认加载更多代理
  */
-public class LoadingDelegate implements AdapterDelegate<LoadingDelegate.NoMoreViewHolder> {
+public class LoadingDelegate extends AdapterDelegate<LoadingDelegate.NoMoreViewHolder> {
 
     private OnRequestMoreListener mRequestMoreListener;
     /**

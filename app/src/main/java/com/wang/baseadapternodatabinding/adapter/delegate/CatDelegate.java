@@ -17,7 +17,7 @@ import com.wang.baseadapternodatabinding.model.Cat;
  * Created by wang
  * on 2016/6/12
  */
-public class CatDelegate implements AdapterDelegate<CatDelegate.CatViewHolder> {
+public class CatDelegate extends AdapterDelegate<CatDelegate.CatViewHolder> {
 
 
     @Override

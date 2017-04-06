@@ -16,7 +16,7 @@ import com.wang.baseadapternodatabinding.model.Dog;
  * Created by wang
  * on 2016/6/12
  */
-public class DogDelegate implements AdapterDelegate<DogDelegate.DogViewHolder> {
+public class DogDelegate extends AdapterDelegate<DogDelegate.DogViewHolder> {
 
     @Override
     public DogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

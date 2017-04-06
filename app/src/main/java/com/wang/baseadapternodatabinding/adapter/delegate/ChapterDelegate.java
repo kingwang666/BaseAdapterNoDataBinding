@@ -17,7 +17,7 @@ import com.wang.baseadapternodatabinding.model.Chapter;
  * on 2016/11/11
  */
 
-public class ChapterDelegate implements AdapterDelegate<ChapterDelegate.ChapterViewHolder> {
+public class ChapterDelegate extends AdapterDelegate<ChapterDelegate.ChapterViewHolder> {
 
     private OnRecyclerViewClickListener mListener;
 

@@ -61,6 +61,11 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     }
 
     @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+        delegatesManager.onBindViewHolder(itemArray, holder, position, payloads);
+    }
+
+    @Override
     public int getItemViewType(int position) {
         return itemArray.get(position).getDataType();
     }
@@ -68,6 +73,21 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     @Override
     public int getItemCount() {
         return itemArray.size();
+    }
+
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        delegatesManager.onViewRecycled(holder);
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(RecyclerView.ViewHolder holder) {
+        return delegatesManager.onFailedToRecycleView(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        delegatesManager.onViewDetachedFromWindow(holder);
     }
 
     /**
@@ -126,12 +146,11 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     @Override
     @SuppressWarnings("unchecked")
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
         int type = holder.getItemViewType();
         if (type == TYPE_LOADING || type == TYPE_FOOTER || type == TYPE_EMPTY || type == TYPE_HEADER) {
             setFullSpan(holder);
         }
-
+        delegatesManager.onViewAttachedToWindow(holder);
     }
 
     @Override

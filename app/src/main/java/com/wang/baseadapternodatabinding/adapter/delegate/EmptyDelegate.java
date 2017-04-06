@@ -14,7 +14,7 @@ import com.wang.baseadapternodatabinding.R;
  * Created on 2016/6/13.
  * Author: wang
  */
-public class EmptyDelegate implements AdapterDelegate<EmptyDelegate.EmptyViewHolder> {
+public class EmptyDelegate extends AdapterDelegate<EmptyDelegate.EmptyViewHolder> {
 
     @DrawableRes
     private int resId;

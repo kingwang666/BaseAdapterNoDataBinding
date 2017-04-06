@@ -17,7 +17,7 @@ import com.wang.baseadapternodatabinding.model.Section;
  * on 2016/11/11
  */
 
-public class SectionDelegate implements AdapterDelegate<SectionDelegate.SectionViewHolder> {
+public class SectionDelegate extends AdapterDelegate<SectionDelegate.SectionViewHolder> {
 
     private OnRecyclerViewClickListener mListener;
 

@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 
 import com.wang.baseadapter.model.RecyclerViewItemArray;
 
+import java.util.Collections;
+import java.util.List;
+
 
 public class AdapterDelegatesManager {
-
 
     /**
      * Map for ViewType to AdapterDeleage
@@ -165,6 +167,50 @@ public class AdapterDelegatesManager {
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder vh, int position) {
         getDelegateForViewType(vh.getItemViewType()).onBindViewHolder(itemArray, vh, position);
+    }
+
+
+    /**
+     * Must be called
+     *
+     * @param itemArray Adapter's data source
+     * @param vh    the ViewHolder to bind
+     * @param position  the position in data source  @throws NullPointerException if no AdapterDelegate has been registered for ViewHolders
+     *                  viewType
+     */
+    @SuppressWarnings("unchecked")
+    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder vh, int position, List<Object> payloads) {
+        getDelegateForViewType(vh.getItemViewType()).onBindViewHolder(itemArray, vh, position, payloads);
+    }
+
+    /**
+     *
+     * @param vh The ViewHolder for the view being recycled
+     */
+    @SuppressWarnings("unchecked")
+    public void onViewRecycled(RecyclerView.ViewHolder vh){
+        getDelegateForViewType(vh.getItemViewType()).onViewRecycled(vh);
+    }
+
+    @SuppressWarnings("unchecked")
+    public boolean onFailedToRecycleView(RecyclerView.ViewHolder vh) {
+        return getDelegateForViewType(vh.getItemViewType()).onFailedToRecycleView(vh);
+    }
+
+    /**
+     * @param vh Holder of the view being attached
+     */
+    @SuppressWarnings("unchecked")
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder vh) {
+        getDelegateForViewType(vh.getItemViewType()).onViewAttachedToWindow(vh);
+    }
+
+    /**
+     * @param vh Holder of the view being detached
+     */
+    @SuppressWarnings("unchecked")
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder vh) {
+        getDelegateForViewType(vh.getItemViewType()).onViewDetachedFromWindow(vh);
     }
 
 
