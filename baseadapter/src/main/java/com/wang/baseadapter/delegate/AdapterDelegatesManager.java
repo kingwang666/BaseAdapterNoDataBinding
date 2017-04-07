@@ -1,18 +1,77 @@
 package com.wang.baseadapter.delegate;
 
+import android.animation.AnimatorSet;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 
+import com.wang.baseadapter.BaseRecyclerViewAdapter;
+import com.wang.baseadapter.animation.AlphaInAnimation;
+import com.wang.baseadapter.animation.BaseAnimation;
+import com.wang.baseadapter.animation.ScaleInAnimation;
+import com.wang.baseadapter.animation.SlideInBottomAnimation;
+import com.wang.baseadapter.animation.SlideInLeftAnimation;
+import com.wang.baseadapter.animation.SlideInRightAnimation;
 import com.wang.baseadapter.model.RecyclerViewItemArray;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
 public class AdapterDelegatesManager {
+
+    @IntDef({ALPHA_IN, SCALE_IN, SLIDE_IN_BOTTOM, SLIDE_IN_LEFT, SLIDE_IN_RIGHT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AnimationType {
+
+    }
+    /**
+     * Use with {@link #openLoadAnimation}
+     */
+    public static final int ALPHA_IN = 1;
+    /**
+     * Use with {@link #openLoadAnimation}
+     */
+    public static final int SCALE_IN = 2;
+    /**
+     * Use with {@link #openLoadAnimation}
+     */
+    public static final int SLIDE_IN_BOTTOM = 3;
+    /**
+     * Use with {@link #openLoadAnimation}
+     */
+    public static final int SLIDE_IN_LEFT = 4;
+    /**
+     * Use with {@link #openLoadAnimation}
+     */
+    public static final int SLIDE_IN_RIGHT = 5;
+
+    private boolean mFirstOnlyEnable = true;
+    private boolean mOpenAnimationEnable = false;
+
+    private Interpolator mInterpolator = new LinearInterpolator();
+    private int mDuration = 300;
+    private int mLastPosition = -1;
+
+    private BaseAnimation mSelectAnimation = new AlphaInAnimation();
+
+    private List<Integer> mNoAnimTypes;
+
+    public AdapterDelegatesManager() {
+        mNoAnimTypes = new ArrayList<>(4);
+        mNoAnimTypes.add(BaseRecyclerViewAdapter.TYPE_EMPTY);
+        mNoAnimTypes.add(BaseRecyclerViewAdapter.TYPE_FOOTER);
+        mNoAnimTypes.add(BaseRecyclerViewAdapter.TYPE_HEADER);
+        mNoAnimTypes.add(BaseRecyclerViewAdapter.TYPE_LOADING);
+    }
 
     /**
      * Map for ViewType to AdapterDeleage
@@ -166,7 +225,9 @@ public class AdapterDelegatesManager {
      */
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder vh, int position) {
-        getDelegateForViewType(vh.getItemViewType()).onBindViewHolder(itemArray, vh, position);
+        int type = vh.getItemViewType();
+        getDelegateForViewType(type).onBindViewHolder(itemArray, vh, position);
+        addAnimation(vh, type);
     }
 
 
@@ -180,7 +241,9 @@ public class AdapterDelegatesManager {
      */
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder vh, int position, List<Object> payloads) {
-        getDelegateForViewType(vh.getItemViewType()).onBindViewHolder(itemArray, vh, position, payloads);
+        int type = vh.getItemViewType();
+        getDelegateForViewType(type).onBindViewHolder(itemArray, vh, position, payloads);
+        addAnimation(vh, type);
     }
 
     /**
@@ -231,5 +294,85 @@ public class AdapterDelegatesManager {
             throw new NullPointerException("No AdapterDelegate added for ViewType " + viewType);
         }
         return delegate;
+    }
+
+    public void addNoAnimType(int type){
+        mNoAnimTypes.add(type);
+    }
+
+    public void resetAnimPosition(){
+        mLastPosition = -1;
+    }
+
+    /**
+     * 加入并开始动画
+     *
+     * @param holder 对应的viewHolder
+     */
+    private void addAnimation(RecyclerView.ViewHolder holder, int type) {
+        if (mOpenAnimationEnable && mSelectAnimation != null && !mNoAnimTypes.contains(type)) {
+            if (!mFirstOnlyEnable || holder.getLayoutPosition() > mLastPosition) {
+                AnimatorSet set = mSelectAnimation.getAnimators(holder.itemView);
+                set.setDuration(mDuration);
+                set.setInterpolator(mInterpolator);
+                set.start();
+                mLastPosition = holder.getLayoutPosition();
+            }
+        }
+    }
+
+    /**
+     * Set the view animation type.
+     *
+     * @param animationType One of {@link #ALPHA_IN}, {@link #SCALE_IN}, {@link #SLIDE_IN_BOTTOM}, {@link #SLIDE_IN_LEFT}, {@link #SLIDE_IN_RIGHT}.
+     */
+    public void openLoadAnimation(@AnimationType int animationType) {
+        this.mOpenAnimationEnable = true;
+        switch (animationType) {
+            case ALPHA_IN:
+                mSelectAnimation = new AlphaInAnimation();
+                break;
+            case SCALE_IN:
+                mSelectAnimation = new ScaleInAnimation();
+                break;
+            case SLIDE_IN_BOTTOM:
+                mSelectAnimation = new SlideInBottomAnimation();
+                break;
+            case SLIDE_IN_LEFT:
+                mSelectAnimation = new SlideInLeftAnimation();
+                break;
+            case SLIDE_IN_RIGHT:
+                mSelectAnimation = new SlideInRightAnimation();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Set Custom ObjectAnimator
+     *
+     * @param animation ObjectAnimator
+     */
+    public void openLoadAnimation(BaseAnimation animation) {
+        this.mOpenAnimationEnable = true;
+        this.mSelectAnimation = animation;
+    }
+
+    public void openLoadAnimation() {
+        this.mOpenAnimationEnable = true;
+    }
+
+    /**
+     * 设置动画是否只有第一次有效果
+     *
+     * @param firstOnly true动画只显示一次
+     */
+    public void isFirstOnly(boolean firstOnly) {
+        this.mFirstOnlyEnable = firstOnly;
+    }
+
+    public void setDuration(int duration) {
+        mDuration = duration;
     }
 }

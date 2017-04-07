@@ -1,15 +1,27 @@
 package com.wang.baseadapter;
 
 
+import android.animation.AnimatorSet;
+import android.support.annotation.IntDef;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 
+import com.wang.baseadapter.animation.AlphaInAnimation;
+import com.wang.baseadapter.animation.BaseAnimation;
+import com.wang.baseadapter.animation.ScaleInAnimation;
+import com.wang.baseadapter.animation.SlideInBottomAnimation;
+import com.wang.baseadapter.animation.SlideInLeftAnimation;
+import com.wang.baseadapter.animation.SlideInRightAnimation;
 import com.wang.baseadapter.delegate.AdapterDelegatesManager;
 import com.wang.baseadapter.delegate.LoadingDelegate;
 import com.wang.baseadapter.model.RecyclerViewItemArray;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 
@@ -33,9 +45,8 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     public static final int TYPE_HEADER = Integer.MAX_VALUE - 4;
 
     protected AdapterDelegatesManager delegatesManager;
-    protected RecyclerViewItemArray itemArray;
 
-    private RecyclerView mRecyclerView;
+    protected RecyclerViewItemArray itemArray;
 
 
     public BaseRecyclerViewAdapter(RecyclerViewItemArray itemArray) {
@@ -147,7 +158,7 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     @SuppressWarnings("unchecked")
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         int type = holder.getItemViewType();
-        if (type == TYPE_LOADING || type == TYPE_FOOTER || type == TYPE_EMPTY || type == TYPE_HEADER) {
+        if (type >= TYPE_HEADER) {
             setFullSpan(holder);
         }
         delegatesManager.onViewAttachedToWindow(holder);
@@ -155,15 +166,14 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        mRecyclerView = recyclerView;
-        if (mRecyclerView.getLayoutManager() instanceof GridLayoutManager){
-            final GridLayoutManager manager = (GridLayoutManager) mRecyclerView.getLayoutManager();
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager){
+            final GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
             if (manager.getSpanSizeLookup() instanceof GridLayoutManager.DefaultSpanSizeLookup){
                 manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
                         int type = itemArray.get(position).getDataType();
-                        if (type == TYPE_LOADING || type == TYPE_FOOTER || type == TYPE_EMPTY || type == TYPE_HEADER){
+                        if (type >= TYPE_HEADER){
                             return manager.getSpanCount(); //宽度为整个recycler的宽度
                         }
                         return 1;
@@ -171,11 +181,6 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
                 });
             }
         }
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        mRecyclerView = null;
     }
 
     /**
@@ -188,4 +193,9 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
             params.setFullSpan(true);
         }
     }
+
+    public void resetAnimPosition(){
+        delegatesManager.resetAnimPosition();
+    }
+
 }
