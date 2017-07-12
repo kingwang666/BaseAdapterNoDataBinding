@@ -111,7 +111,7 @@ public class EmptyDelegate extends AdapterDelegate<EmptyDelegate.EmptyViewHolder
         return next;
     }
 
-    class EmptyViewHolder extends RecyclerView.ViewHolder {
+    protected class EmptyViewHolder extends RecyclerView.ViewHolder {
 
         AppCompatImageView mEmptyImg;
 
