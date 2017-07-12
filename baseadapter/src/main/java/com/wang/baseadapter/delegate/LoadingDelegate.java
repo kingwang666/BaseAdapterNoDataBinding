@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.wang.baseadapter.R;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 
 /**
  * Created on 2016/6/13.
@@ -48,7 +48,7 @@ public class LoadingDelegate extends AdapterDelegate<LoadingDelegate.NoMoreViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, NoMoreViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray itemArray, NoMoreViewHolder vh, int position) {
         if (canLoadMore()){
             vh.mProgress.setVisibility(View.VISIBLE);
             vh.mTipTV.setText("正在加载更多...");

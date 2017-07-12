@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 import com.wang.baseadapternodatabinding.R;
 import com.wang.baseadapternodatabinding.interfaces.OnRecyclerViewClickListener;
 import com.wang.baseadapternodatabinding.model.Section;
@@ -32,7 +32,7 @@ public class SectionDelegate extends AdapterDelegate<SectionDelegate.SectionView
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, SectionViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray itemArray, SectionViewHolder vh, int position) {
         Section section = (Section) itemArray.get(position).getData();
         vh.nameTV.setText(section.name);
     }

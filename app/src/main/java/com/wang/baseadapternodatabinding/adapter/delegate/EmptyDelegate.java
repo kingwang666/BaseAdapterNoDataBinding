@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 import com.wang.baseadapternodatabinding.R;
 
 /**
@@ -29,7 +29,7 @@ public class EmptyDelegate extends AdapterDelegate<EmptyDelegate.EmptyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, EmptyViewHolder holder, int position) {
+    public void onBindViewHolder(ItemArray itemArray, EmptyViewHolder holder, int position) {
 
     }
 

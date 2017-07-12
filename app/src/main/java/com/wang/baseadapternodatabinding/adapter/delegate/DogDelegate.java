@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 import com.wang.baseadapternodatabinding.R;
 import com.wang.baseadapternodatabinding.model.Dog;
 
@@ -25,7 +25,7 @@ public class DogDelegate extends AdapterDelegate<DogDelegate.DogViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, DogViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray itemArray, DogViewHolder vh, int position) {
         Dog dog = (Dog) itemArray.get(position).getData();
         vh.nameTV.setText("you are dog " + dog.name);
     }

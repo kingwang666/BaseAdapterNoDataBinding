@@ -4,17 +4,17 @@ package com.wang.baseadapter.model;
 /**
  * 列表数据类
  */
-public class ItemData<T> {
+public class ItemData {
     private int mDataType;
-    private T mData;
+    private Object mData;
 
-    public ItemData(int dataType, T data) {
+    public ItemData(int dataType, Object data) {
         this.mDataType = dataType;
         this.mData = data;
     }
 
-    public ItemData() {
-
+    public ItemData(int dataType) {
+        this(dataType, null);
     }
 
     public int getDataType() {
@@ -25,11 +25,12 @@ public class ItemData<T> {
         this.mDataType = dataType;
     }
 
-    public T getData() {
-        return mData;
+    @SuppressWarnings("unchecked")
+    public<T> T getData() {
+        return (T) mData;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.mData = data;
     }
 

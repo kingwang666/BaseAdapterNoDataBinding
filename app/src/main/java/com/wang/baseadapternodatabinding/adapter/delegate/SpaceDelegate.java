@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 import com.wang.baseadapternodatabinding.R;
 
 /**
@@ -23,7 +23,7 @@ public class SpaceDelegate extends AdapterDelegate {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ItemArray itemArray, RecyclerView.ViewHolder viewHolder, int position) {
 
     }
 }

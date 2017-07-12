@@ -4,12 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 
 import com.wang.baseadapter.delegate.LoadingDelegate;
 import com.wang.baseadapter.model.ItemData;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 import com.wang.baseadapternodatabinding.adapter.MultiTypeAdapter;
 import com.wang.baseadapternodatabinding.model.Cat;
 import com.wang.baseadapternodatabinding.model.Dog;
@@ -21,7 +20,7 @@ import java.util.List;
 public class MultiTypeActivity extends AppCompatActivity implements LoadingDelegate.OnRequestMoreListener {
 
     private RecyclerView recyclerView;
-    private RecyclerViewItemArray itemArray;
+    private ItemArray itemArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +34,17 @@ public class MultiTypeActivity extends AppCompatActivity implements LoadingDeleg
     }
 
     private void initArray() {
-        itemArray = new RecyclerViewItemArray();
+        itemArray = new ItemArray();
         for (int i = 0; i < 20; i++) {
 
             if (i % 3 == 0) {
-                itemArray.add(new ItemData<>(MultiTypeAdapter.TYPE_DOG, new Dog(i + "")));
+                itemArray.add(new ItemData(MultiTypeAdapter.TYPE_DOG, new Dog(i + "")));
             } else {
-                itemArray.add(new ItemData<>(MultiTypeAdapter.TYPE_CAT, new Cat(i + "")));
+                itemArray.add(new ItemData(MultiTypeAdapter.TYPE_CAT, new Cat(i + "")));
             }
         }
 //        itemArray.add(new ItemData<>(MultiTypeAdapter.TYPE_EMPTY, null));
-        itemArray.add(new ItemData<>(MultiTypeAdapter.TYPE_LOADING, null));
+        itemArray.add(new ItemData(MultiTypeAdapter.TYPE_LOADING, null));
     }
 
     int count = 1;

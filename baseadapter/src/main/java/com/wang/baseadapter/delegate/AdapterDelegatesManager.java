@@ -3,7 +3,6 @@ package com.wang.baseadapter.delegate;
 import android.animation.AnimatorSet;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -17,12 +16,11 @@ import com.wang.baseadapter.animation.ScaleInAnimation;
 import com.wang.baseadapter.animation.SlideInBottomAnimation;
 import com.wang.baseadapter.animation.SlideInLeftAnimation;
 import com.wang.baseadapter.animation.SlideInRightAnimation;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -224,7 +222,7 @@ public class AdapterDelegatesManager {
      *                  viewType
      */
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray itemArray, RecyclerView.ViewHolder vh, int position) {
         int type = vh.getItemViewType();
         getDelegateForViewType(type).onBindViewHolder(itemArray, vh, position);
         addAnimation(vh, type);
@@ -240,7 +238,7 @@ public class AdapterDelegatesManager {
      *                  viewType
      */
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, RecyclerView.ViewHolder vh, int position, List<Object> payloads) {
+    public void onBindViewHolder(ItemArray itemArray, RecyclerView.ViewHolder vh, int position, List<Object> payloads) {
         int type = vh.getItemViewType();
         getDelegateForViewType(type).onBindViewHolder(itemArray, vh, position, payloads);
         addAnimation(vh, type);

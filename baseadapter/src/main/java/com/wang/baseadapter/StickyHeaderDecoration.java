@@ -6,7 +6,6 @@ import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,10 +66,8 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
 //            int firstVisiblePosition = ((RecyclerView.LayoutParams) firstVisibleItemView.getLayoutParams()).getViewAdapterPosition();
             if (isStickyView(parent, v)) {
                 mStickyHeaderTop = v.getTop() - mStickyView.getHeight();
-                Log.d(TAG, "true stick top " + mStickyHeaderTop);
             } else {
                 mStickyHeaderTop = 0;
-                Log.d(TAG, "stick top " + mStickyHeaderTop);
             }
             mClipBounds = c.getClipBounds();
             mClipBounds.top = mStickyHeaderTop + mStickyView.getHeight();
@@ -124,7 +121,6 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
         int firstVisiblePosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
         int firstCompletelyVisiblePosition = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
         int headerPosition = findStickyHeaderPosition(parent, firstVisiblePosition);
-        Log.d(TAG, "header " + headerPosition + " first " + firstVisiblePosition + " first completely " + firstCompletelyVisiblePosition);
         if (headerPosition == -1 || (headerPosition == firstCompletelyVisiblePosition)) {
             resetPinnedHeader();
             return;

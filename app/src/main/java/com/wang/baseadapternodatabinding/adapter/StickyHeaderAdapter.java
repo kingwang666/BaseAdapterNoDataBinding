@@ -2,7 +2,7 @@ package com.wang.baseadapternodatabinding.adapter;
 
 import com.wang.baseadapter.BaseRecyclerViewAdapter;
 import com.wang.baseadapter.delegate.AdapterDelegatesManager;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 import com.wang.baseadapternodatabinding.adapter.delegate.ChapterDelegate;
 import com.wang.baseadapternodatabinding.adapter.delegate.SectionDelegate;
 import com.wang.baseadapternodatabinding.adapter.delegate.SpaceDelegate;
@@ -19,7 +19,7 @@ public class StickyHeaderAdapter extends BaseRecyclerViewAdapter {
     public static final int TYPE_SECTION = 2;
     public static final int TYPE_SPACE = 3;
 
-    public StickyHeaderAdapter(RecyclerViewItemArray itemArray, OnRecyclerViewClickListener listener) {
+    public StickyHeaderAdapter(ItemArray itemArray, OnRecyclerViewClickListener listener) {
         super(itemArray);
         delegatesManager.openLoadAnimation(AdapterDelegatesManager.SLIDE_IN_RIGHT);
         delegatesManager.addNoAnimType(TYPE_CHAPTER);

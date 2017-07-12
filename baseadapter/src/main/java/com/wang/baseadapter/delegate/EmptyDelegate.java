@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.wang.baseadapter.R;
 import com.wang.baseadapter.model.EmptyData;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 
 
 /**
@@ -69,7 +69,7 @@ public class EmptyDelegate extends AdapterDelegate<EmptyDelegate.EmptyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, EmptyViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray itemArray, EmptyViewHolder vh, int position) {
         if (mTitleRes != -1) {
             mTitle = mContext.getResources().getString(mTitleRes);
         }

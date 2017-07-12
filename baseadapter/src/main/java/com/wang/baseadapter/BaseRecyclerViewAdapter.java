@@ -1,27 +1,15 @@
 package com.wang.baseadapter;
 
 
-import android.animation.AnimatorSet;
-import android.support.annotation.IntDef;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 
-import com.wang.baseadapter.animation.AlphaInAnimation;
-import com.wang.baseadapter.animation.BaseAnimation;
-import com.wang.baseadapter.animation.ScaleInAnimation;
-import com.wang.baseadapter.animation.SlideInBottomAnimation;
-import com.wang.baseadapter.animation.SlideInLeftAnimation;
-import com.wang.baseadapter.animation.SlideInRightAnimation;
 import com.wang.baseadapter.delegate.AdapterDelegatesManager;
 import com.wang.baseadapter.delegate.LoadingDelegate;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 
@@ -46,18 +34,18 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 
     protected AdapterDelegatesManager delegatesManager;
 
-    protected RecyclerViewItemArray itemArray;
+    protected ItemArray itemArray;
 
 
-    public BaseRecyclerViewAdapter(RecyclerViewItemArray itemArray) {
+    public BaseRecyclerViewAdapter(ItemArray itemArray) {
         this(itemArray, new AdapterDelegatesManager());
     }
 
-    public BaseRecyclerViewAdapter(RecyclerViewItemArray itemArray, AdapterDelegatesManager delegatesManager) {
+    public BaseRecyclerViewAdapter(ItemArray itemArray, AdapterDelegatesManager delegatesManager) {
         if (delegatesManager == null) {
             throw new NullPointerException("AdapterDelegatesManager is null");
         }
-        this.itemArray = itemArray == null ? new RecyclerViewItemArray() : itemArray;
+        this.itemArray = itemArray == null ? new ItemArray() : itemArray;
         this.delegatesManager = delegatesManager;
     }
 
@@ -106,7 +94,7 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
      *
      * @return The items / data source
      */
-    public RecyclerViewItemArray getItems() {
+    public ItemArray getItems() {
         return itemArray;
     }
 
@@ -114,7 +102,7 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
      * 载入数据
      * @param itemArray
      */
-    public void setItems(RecyclerViewItemArray itemArray) {
+    public void setItems(ItemArray itemArray) {
         this.itemArray = itemArray;
         notifyDataSetChanged();
     }

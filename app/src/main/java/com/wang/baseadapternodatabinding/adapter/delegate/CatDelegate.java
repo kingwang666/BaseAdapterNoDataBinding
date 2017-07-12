@@ -6,10 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 import com.wang.baseadapternodatabinding.R;
 import com.wang.baseadapternodatabinding.model.Cat;
 
@@ -27,8 +28,8 @@ public class CatDelegate extends AdapterDelegate<CatDelegate.CatViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, CatViewHolder vh, int position) {
-        Cat cat = (Cat) itemArray.get(position).getData();
+    public void onBindViewHolder(ItemArray itemArray, CatViewHolder vh, int position) {
+        Cat cat = itemArray.get(position).getData();
         vh.nameTV.setText("you are cat " + cat.name);
     }
 
@@ -36,9 +37,15 @@ public class CatDelegate extends AdapterDelegate<CatDelegate.CatViewHolder> {
 
         TextView nameTV;
 
-        public CatViewHolder(View itemView) {
+        public CatViewHolder(final View itemView) {
             super(itemView);
             nameTV = (TextView) itemView.findViewById(R.id.name_tv);
+            itemView.findViewById(R.id.swipe_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(itemView.getContext(), "click " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }

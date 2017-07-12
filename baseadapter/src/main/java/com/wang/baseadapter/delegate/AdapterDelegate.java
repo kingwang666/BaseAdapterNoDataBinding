@@ -1,10 +1,9 @@
 package com.wang.baseadapter.delegate;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      * @param vh   The {@link RecyclerView.ViewHolder} to bind
      * @param payloads A non-null list of merged payloads. Can be empty list if requires full update.
      */
-    public void onBindViewHolder(RecyclerViewItemArray itemArray, VH vh, int position, List<Object> payloads){
+    public void onBindViewHolder(ItemArray itemArray, VH vh, int position, List<Object> payloads){
         onBindViewHolder(itemArray, vh, position);
     }
 
@@ -40,7 +39,7 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      * @param position The position in the datasource
      * @param vh   The {@link RecyclerView.ViewHolder} to bind
      */
-    public abstract void onBindViewHolder(RecyclerViewItemArray itemArray, VH vh, int position);
+    public abstract void onBindViewHolder(ItemArray itemArray, VH vh, int position);
 
     /**
      * Called when a view created by this adapter has been recycled.

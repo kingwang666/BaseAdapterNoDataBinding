@@ -14,7 +14,7 @@ import com.wang.baseadapter.StickyHeaderDecoration;
 import com.wang.baseadapter.listener.OnHeaderClickListener;
 import com.wang.baseadapter.listener.StickyHeaderTouchListener;
 import com.wang.baseadapter.model.ItemData;
-import com.wang.baseadapter.model.RecyclerViewItemArray;
+import com.wang.baseadapter.model.ItemArray;
 import com.wang.baseadapter.widget.WaveSideBarView;
 import com.wang.baseadapternodatabinding.adapter.StickyHeaderAdapter;
 import com.wang.baseadapternodatabinding.interfaces.OnRecyclerViewClickListener;
@@ -30,10 +30,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
 
     private RecyclerView mRecyclerView;
     private WaveSideBarView mSideBarView;
-    private RecyclerViewItemArray mItemArray;
-    private boolean move;
-    private int mIndex;
-
+    private ItemArray mItemArray;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +60,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
                 for (int i = 0; i < size; i++) {
                     ItemData data = mItemArray.get(i);
                     if (data.getDataType() == StickyHeaderAdapter.TYPE_CHAPTER) {
-                        Chapter chapter = (Chapter) data.getData();
+                        Chapter chapter = data.getData();
                         if (chapter.name.startsWith(letter)) {
 //                            LinearLayoutManager mLayoutManager =
 //                                    (LinearLayoutManager) mRecyclerView.getLayoutManager();
@@ -80,14 +77,14 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
 
 
     private void initArray() {
-        mItemArray = new RecyclerViewItemArray();
+        mItemArray = new ItemArray();
         for (int i = 1; i < 15; i++) {
             Chapter chapter = new Chapter("第" + i + "章", 9);
-            mItemArray.add(new ItemData<>(StickyHeaderAdapter.TYPE_CHAPTER, chapter));
+            mItemArray.add(new ItemData(StickyHeaderAdapter.TYPE_CHAPTER, chapter));
             for (int j = 1; j < 10; j++) {
                 Section section = new Section(i + "-" + j);
                 chapter.sections.add(section);
-                mItemArray.add(new ItemData<>(StickyHeaderAdapter.TYPE_SECTION, section));
+                mItemArray.add(new ItemData(StickyHeaderAdapter.TYPE_SECTION, section));
             }
         }
     }
@@ -105,14 +102,14 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
                 onChapterClick(position);
                 break;
             case StickyHeaderAdapter.TYPE_SECTION:
-                Section section = (Section) mItemArray.get(position).getData();
+                Section section = mItemArray.get(position).getData();
                 Toast.makeText(StickyHeaderActivity.this, section.name, Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
     private void onChapterClick(int position) {
-        Chapter chapter = (Chapter) mItemArray.get(position).getData();
+        Chapter chapter = mItemArray.get(position).getData();
         Toast.makeText(StickyHeaderActivity.this, chapter.name, Toast.LENGTH_SHORT).show();
         if (chapter.isOpen) {
             chapter.isOpen = false;
