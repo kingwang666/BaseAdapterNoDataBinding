@@ -17,6 +17,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.multi_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMultiType(v);
+            }
+        });
+        findViewById(R.id.sticky_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSticky(v);
+            }
+        });
     }
 
     public void onMultiType(View view) {

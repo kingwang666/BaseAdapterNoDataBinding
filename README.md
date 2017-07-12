@@ -6,9 +6,10 @@
 2. at the bottom of the load more
 3. add WaveSideBar for quick jump list
 4. support snap and sticky header
+5. support SwipeItemView
 
 ## ScreenShot ##
-<img src="screenshot/sticky_header.jpg" width=200></img> <img src="screenshot/multi_type.jpg" width=200></img> <img src="screenshot/load_more.jpg" width=200></img> <img src="screenshot/sticky_header.gif" width=200 ></img>
+<img src="screenshot/sticky_header.jpg" width=200></img> <img src="screenshot/multi_type.jpg" width=200></img> <img src="screenshot/load_more.jpg" width=200></img> <img src="screenshot/side.gif" width=200 ></img> <img src="screenshot/swipe.gif" width=200 ></img>
 
 ## Thanks ##
 [AdapterDelegates](https://github.com/sockeqwe/AdapterDelegates)  
