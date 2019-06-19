@@ -1,9 +1,8 @@
 package com.wang.baseadapternodatabinding.adapter;
 
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.wang.baseadapter.BaseRecyclerViewAdapter;
 import com.wang.baseadapter.RecyclerSwipeAdapter;
 import com.wang.baseadapter.delegate.LoadingDelegate;
 import com.wang.baseadapter.model.ItemArray;
