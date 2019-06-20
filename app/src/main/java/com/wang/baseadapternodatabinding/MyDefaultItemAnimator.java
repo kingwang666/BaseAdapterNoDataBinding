@@ -1,14 +1,15 @@
 package com.wang.baseadapternodatabinding;
 
 
+import android.animation.ValueAnimator;
+import android.view.View;
+
 import androidx.annotation.NonNull;
-import androidx.core.animation.AnimatorCompatHelper;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.core.view.ViewPropertyAnimatorListener;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -499,7 +500,7 @@ public class MyDefaultItemAnimator extends SimpleItemAnimator {
     }
 
     private void resetAnimation(RecyclerView.ViewHolder holder) {
-        AnimatorCompatHelper.clearInterpolator(holder.itemView);
+        holder.itemView.animate().setInterpolator(new ValueAnimator().getInterpolator());
         endAnimation(holder);
     }
 
