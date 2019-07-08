@@ -2,13 +2,29 @@ package com.wang.baseadapter.model;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * RecyclerView列表类
  */
-public class ItemArray extends ArrayList<ItemData> {
+public class ItemArray<T extends ItemData> extends ArrayList<T> {
+
+    public ItemArray(int initialCapacity) {
+        super(initialCapacity);
+    }
+
+    public ItemArray() {
+        super();
+    }
+
+    public ItemArray(Collection<? extends T> c) {
+        super(c);
+    }
 
     /**
      * 找出type类型的第一个数据的位置
@@ -18,7 +34,7 @@ public class ItemArray extends ArrayList<ItemData> {
      */
     public int findFirstTypePosition(int type) {
         for (int i = 0; i < size(); i++) {
-            if (type == get(i).getDataType()) {
+            if (type == get(i).dataType) {
                 return i;
             }
         }
@@ -34,7 +50,7 @@ public class ItemArray extends ArrayList<ItemData> {
      */
     public int findLastTypePosition(int type) {
         for (int i = size() - 1; i >= 0; i--) {
-            if (type == get(i).getDataType()) {
+            if (type == get(i).dataType) {
                 return i;
             }
         }
@@ -50,7 +66,7 @@ public class ItemArray extends ArrayList<ItemData> {
      */
     public int findFirstNotTypePosition(int type) {
         for (int i = 0; i < size(); i++) {
-            if (type != get(i).getDataType()) {
+            if (type != get(i).dataType) {
                 return i;
             }
         }
@@ -66,7 +82,7 @@ public class ItemArray extends ArrayList<ItemData> {
      */
     public int findLastNotTypePosition(int type) {
         for (int i = size() - 1; i >= 0; i--) {
-            if (type != get(i).getDataType()) {
+            if (type != get(i).dataType) {
                 return i;
             }
         }
@@ -80,7 +96,7 @@ public class ItemArray extends ArrayList<ItemData> {
      * @param data 插入的数据
      * @return 对应的位置
      */
-    public int addAfterLast(int type, ItemData data) {
+    public int addAfterLast(int type, T data) {
         int position = findLastTypePosition(type);
         add(++position, data);
         return position;
@@ -93,7 +109,7 @@ public class ItemArray extends ArrayList<ItemData> {
      * @param data 插入的数据
      * @return 对应的位置
      */
-    public int addBeforFirst(int type, ItemData data) {
+    public int addBeforFirst(int type, T data) {
         int position = findFirstTypePosition(type);
         add(position, data);
         return position;
@@ -122,10 +138,10 @@ public class ItemArray extends ArrayList<ItemData> {
      */
     public int removeAllType(int type) {
         int count = 0;
-        Iterator<ItemData> iterator = iterator();
+        Iterator<T> iterator = iterator();
         while (iterator.hasNext()) {
             ItemData item = iterator.next();
-            if (item.getDataType() == type) {
+            if (item.dataType == type) {
                 iterator.remove();
                 count++;
             }
@@ -138,53 +154,14 @@ public class ItemArray extends ArrayList<ItemData> {
      *
      * @param type  类型
      * @param datas 数据
-     * @param <E>   数据类型
      * @return 数据数目
      */
-    public <E> int addAllType(int type, List<E> datas) {
+    public int addAllType(int type, List<T> datas) {
         int count = 0;
-        for (E e : datas) {
-            addAfterLast(type, new ItemData(type, e));
-            count++;
-        }
+        int position = findLastTypePosition(type);
+        addAll(position, datas);
         return count;
 
-    }
-
-
-    /**
-     * 在列表最后添加多个数据
-     *
-     * @param type  类型
-     * @param datas 数据
-     * @param <E>   数据类型
-     * @return 数据数目
-     */
-    public <E> int addAllAtLast(int type, List<E> datas) {
-        int count = 0;
-        for (E e : datas) {
-            add(new ItemData(type, e));
-            count++;
-        }
-        return count;
-    }
-
-    /**
-     * 在指定位置添加多个数据
-     *
-     * @param position 开始插入数据位置
-     * @param type     类型
-     * @param datas    数据
-     * @param <E>      数据类型
-     * @return 数据数目
-     */
-    public <E> int addAllAtPosition(int position, int type, List<E> datas) {
-        int count = 0;
-        for (E e : datas) {
-            add(position + count, new ItemData(type, e));
-            count++;
-        }
-        return count;
     }
 
     /**
@@ -209,6 +186,17 @@ public class ItemArray extends ArrayList<ItemData> {
      */
     public boolean isEmptyOfType(int type) {
         return findFirstTypePosition(type) == -1;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ItemArray<T> sortNew(Comparator<T> c){
+        Object[] a = toArray();
+        Arrays.sort(a, (Comparator) c);
+        ItemArray<T> result = new ItemArray<>(a.length);
+        for (Object anA : a) {
+            result.add((T) anA);
+        }
+        return result;
     }
 
 }

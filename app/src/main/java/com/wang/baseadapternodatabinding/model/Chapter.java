@@ -1,5 +1,8 @@
 package com.wang.baseadapternodatabinding.model;
 
+import com.wang.baseadapter.model.ItemData;
+import com.wang.baseadapternodatabinding.adapter.StickyHeaderAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +11,7 @@ import java.util.List;
  * on 2016/11/11
  */
 
-public class Chapter {
+public class Chapter extends ItemData {
 
     public String name;
 
@@ -19,6 +22,7 @@ public class Chapter {
     public boolean isOpen;
 
     public Chapter(String name, int sectionSize) {
+        super(StickyHeaderAdapter.TYPE_CHAPTER);
         this.name = name;
         this.sectionSize = sectionSize;
         this.sections = new ArrayList<>(sectionSize);

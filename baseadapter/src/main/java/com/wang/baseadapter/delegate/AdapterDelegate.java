@@ -1,12 +1,15 @@
 package com.wang.baseadapter.delegate;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestBuilder;
 import com.wang.baseadapter.model.ItemArray;
+import com.wang.baseadapter.model.ItemData;
 
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 
 public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
@@ -19,7 +22,7 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      * @param viewType the datasource type
      * @return The new instantiated {@link VH}
      */
-    public abstract VH onCreateViewHolder(ViewGroup parent, int viewType);
+    public abstract VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType);
 
     /**
      * Called to bind the {@link RecyclerView.ViewHolder} to the item of the datas source set
@@ -29,7 +32,7 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      * @param vh   The {@link RecyclerView.ViewHolder} to bind
      * @param payloads A non-null list of merged payloads. Can be empty list if requires full update.
      */
-    public void onBindViewHolder(ItemArray itemArray, VH vh, int position, List<Object> payloads){
+    public void onBindViewHolder(@NonNull ItemArray<ItemData> itemArray, @NonNull VH vh, int position, @NonNull List<Object> payloads){
         onBindViewHolder(itemArray, vh, position);
     }
 
@@ -40,7 +43,12 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      * @param position The position in the datasource
      * @param vh   The {@link RecyclerView.ViewHolder} to bind
      */
-    public abstract void onBindViewHolder(ItemArray itemArray, VH vh, int position);
+    public abstract void onBindViewHolder(@NonNull ItemArray<ItemData> itemArray, @NonNull VH vh, int position);
+
+    @Nullable
+    public RequestBuilder<?> getPreloadRequestBuilder(@NonNull ItemData data) {
+        throw new IllegalStateException("must be override");
+    }
 
     /**
      * Called when a view created by this adapter has been recycled.
@@ -60,7 +68,7 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      *
      * @param vh The ViewHolder for the view being recycled
      */
-    protected void onViewRecycled(VH vh) {
+    protected void onViewRecycled(@NonNull VH vh) {
     }
 
     /**
@@ -99,7 +107,7 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      * RecyclerView will check the View's transient state again before giving a final decision.
      * Default implementation returns false.
      */
-    protected boolean onFailedToRecycleView(VH vh) {
+    protected boolean onFailedToRecycleView(@NonNull VH vh) {
         return false;
     }
 
@@ -114,7 +122,7 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      *
      * @param vh Holder of the view being attached
      */
-    protected void onViewAttachedToWindow(VH vh) {
+    protected void onViewAttachedToWindow(@NonNull VH vh) {
     }
 
     /**
@@ -126,6 +134,6 @@ public abstract class AdapterDelegate<VH extends RecyclerView.ViewHolder> {
      *
      * @param vh Holder of the view being detached
      */
-    protected void onViewDetachedFromWindow(VH vh) {
+    protected void onViewDetachedFromWindow(@NonNull VH vh) {
     }
 }

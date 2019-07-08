@@ -1,9 +1,11 @@
 package com.wang.baseadapter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.wang.baseadapter.model.ItemArray;
+import com.wang.baseadapter.delegate.AdapterDelegatesManager;
 import com.wang.baseadapter.model.ItemData;
 import com.wang.baseadapter.util.SwipeAdapterInterface;
 import com.wang.baseadapter.util.SwipeItemMangerImpl;
@@ -12,13 +14,20 @@ import com.wang.baseadapter.widget.SwipeItemView;
 
 import java.util.List;
 
-
-public abstract class RecyclerSwipeAdapter extends BaseRecyclerViewAdapter implements SwipeItemMangerInterface, SwipeAdapterInterface {
+/**
+ * Author: wangxiaojie6
+ * Date: 2018/7/17
+ */
+public abstract class SyncRecyclerSwipeAdapter extends BaseSyncAdapter implements SwipeItemMangerInterface, SwipeAdapterInterface {
 
     protected SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
 
-    public RecyclerSwipeAdapter(ItemArray<ItemData> itemArray) {
-        super(itemArray);
+    public SyncRecyclerSwipeAdapter(@Nullable DiffUtil.ItemCallback<ItemData> callback) {
+        super(callback);
+    }
+
+    public SyncRecyclerSwipeAdapter(@Nullable AdapterDelegatesManager delegatesManager, @Nullable DiffUtil.ItemCallback<ItemData> callback) {
+        super(delegatesManager, callback);
     }
 
     @Override
@@ -86,4 +95,5 @@ public abstract class RecyclerSwipeAdapter extends BaseRecyclerViewAdapter imple
     public void setMode(SwipeItemView.Mode mode) {
         mItemManger.setMode(mode);
     }
+
 }

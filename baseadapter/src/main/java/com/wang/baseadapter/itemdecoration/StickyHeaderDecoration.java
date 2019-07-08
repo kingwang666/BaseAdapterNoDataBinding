@@ -1,4 +1,4 @@
-package com.wang.baseadapter;
+package com.wang.baseadapter.itemdecoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.wang.baseadapter.SwipeStickyAdapter;
+
 
 public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
 
@@ -26,7 +28,6 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
     private RecyclerView.Adapter mAdapter;
     private View mStickyView;
 
-    private Drawable mBackground;
 
 
     private final SparseArray<StickyHeaderCreator> mTypeStickyHeaderFactories = new SparseArray<>();
@@ -49,19 +50,12 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
         registerTypePinnedHeader(viewType);
     }
 
-    public StickyHeaderDecoration(int viewType, Drawable background) {
-        this.mHeaderPosition = -1;
-        this.mCurrentItemType = -1;
-        registerTypePinnedHeader(viewType);
-        mBackground = background;
-    }
-
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         createPinnedHeader(parent);
 
         if (mStickyView != null) {
-            View v = parent.findChildViewUnder(c.getWidth() / 2, mStickyView.getHeight() + 0.5f);
+            View v = parent.findChildViewUnder(c.getWidth() / 2f, mStickyView.getHeight() + 0.5f);
 //            View firstVisibleItemView = parent.getLayoutManager().getChildAt(0);
 //            int firstVisiblePosition = ((RecyclerView.LayoutParams) firstVisibleItemView.getLayoutParams()).getViewAdapterPosition();
             if (isStickyView(parent, v)) {
@@ -83,13 +77,6 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
             mClipBounds.top = 0;
             c.clipRect(mClipBounds);
             c.translate(0, mStickyHeaderTop);
-            if (mBackground != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mStickyView.setBackground(mBackground);
-                } else {
-                    mStickyView.setBackgroundDrawable(mBackground);
-                }
-            }
             mStickyView.draw(c);
             c.restore();
         }
@@ -142,7 +129,6 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
             }
 
             mStickyView = stickyViewHolder.itemView;
-
 
             // read layout parameters
             ViewGroup.LayoutParams layoutParams = mStickyView.getLayoutParams();

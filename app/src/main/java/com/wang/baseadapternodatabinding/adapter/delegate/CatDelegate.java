@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
 import com.wang.baseadapter.model.ItemArray;
+import com.wang.baseadapter.model.ItemData;
 import com.wang.baseadapternodatabinding.R;
 import com.wang.baseadapternodatabinding.model.Cat;
 
@@ -28,8 +29,8 @@ public class CatDelegate extends AdapterDelegate<CatDelegate.CatViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ItemArray itemArray, CatViewHolder vh, int position) {
-        Cat cat = itemArray.get(position).getData();
+    public void onBindViewHolder(ItemArray<ItemData> itemArray, CatViewHolder vh, int position) {
+        Cat cat = (Cat) itemArray.get(position);
         vh.nameTV.setText("you are cat " + cat.name);
     }
 

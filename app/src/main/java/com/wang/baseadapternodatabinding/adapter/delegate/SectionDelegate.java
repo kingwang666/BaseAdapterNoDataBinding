@@ -33,7 +33,7 @@ public class SectionDelegate extends AdapterDelegate<SectionDelegate.SectionView
 
     @Override
     public void onBindViewHolder(ItemArray itemArray, SectionViewHolder vh, int position) {
-        Section section = (Section) itemArray.get(position).getData();
+        Section section = (Section) itemArray.get(position);
         vh.nameTV.setText(section.name);
     }
 

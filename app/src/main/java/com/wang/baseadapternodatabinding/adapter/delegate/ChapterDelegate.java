@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.wang.baseadapter.delegate.AdapterDelegate;
 import com.wang.baseadapter.model.ItemArray;
+import com.wang.baseadapter.model.ItemData;
 import com.wang.baseadapternodatabinding.R;
 import com.wang.baseadapternodatabinding.interfaces.OnRecyclerViewClickListener;
 import com.wang.baseadapternodatabinding.model.Chapter;
@@ -32,8 +33,8 @@ public class ChapterDelegate extends AdapterDelegate<ChapterDelegate.ChapterView
     }
 
     @Override
-    public void onBindViewHolder(ItemArray itemArray, ChapterViewHolder vh, int position) {
-        Chapter chapter = (Chapter) itemArray.get(position).getData();
+    public void onBindViewHolder(ItemArray<ItemData> itemArray, ChapterViewHolder vh, int position) {
+        Chapter chapter = (Chapter) itemArray.get(position);
         vh.nameTV.setText(chapter.name + " " + (chapter.isOpen ? "open" : "close"));
     }
 

@@ -1,12 +1,11 @@
 package com.wang.baseadapter.listener;
 
 import android.content.Context;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.wang.baseadapter.StickyHeaderDecoration;
-
-import androidx.recyclerview.widget.RecyclerView;
+import com.wang.baseadapter.itemdecoration.StickyHeaderDecoration;
 
 /**
  * Created by wang
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 
 public class StickyHeaderTouchListener implements RecyclerView.OnItemTouchListener {
-
     private final GestureDetector mTapDetector;
     private final StickyHeaderDecoration mDecor;
     private OnHeaderClickListener mOnHeaderClickListener;

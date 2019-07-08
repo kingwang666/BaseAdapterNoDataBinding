@@ -68,23 +68,29 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
     @Override
     public void openItem(int position) {
         if (mode == SwipeItemView.Mode.Multiple) {
-            if (!mOpenPositions.contains(position))
-                mOpenPositions.add(position);
+            mOpenPositions.add(position);
+            swipeAdapterInterface.notifyItemChanged(position);
         } else {
+            if (mOpenPosition != INVALID_POSITION) {
+                swipeAdapterInterface.notifyItemChanged(mOpenPosition);
+            }
             mOpenPosition = position;
+            swipeAdapterInterface.notifyItemChanged(mOpenPosition);
         }
-        swipeAdapterInterface.notifyDatasetChanged();
     }
 
     @Override
     public void closeItem(int position) {
         if (mode == SwipeItemView.Mode.Multiple) {
-            mOpenPositions.remove(position);
+            if (mOpenPositions.remove(position)){
+                swipeAdapterInterface.notifyItemChanged(position);
+            }
         } else {
-            if (mOpenPosition == position)
+            if (mOpenPosition == position) {
                 mOpenPosition = INVALID_POSITION;
+                swipeAdapterInterface.notifyItemChanged(position);
+            }
         }
-        swipeAdapterInterface.notifyDatasetChanged();
     }
 
     @Override

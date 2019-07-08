@@ -1,6 +1,5 @@
 package com.wang.baseadapter;
 
-
 import androidx.recyclerview.widget.RecyclerView;
 
 /**

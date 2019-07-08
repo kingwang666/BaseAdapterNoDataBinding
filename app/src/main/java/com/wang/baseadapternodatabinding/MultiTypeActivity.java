@@ -20,7 +20,7 @@ import java.util.List;
 public class MultiTypeActivity extends AppCompatActivity implements LoadingDelegate.OnRequestMoreListener {
 
     private RecyclerView recyclerView;
-    private ItemArray itemArray;
+    private ItemArray<ItemData> itemArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +34,17 @@ public class MultiTypeActivity extends AppCompatActivity implements LoadingDeleg
     }
 
     private void initArray() {
-        itemArray = new ItemArray();
+        itemArray = new ItemArray<>();
         for (int i = 0; i < 20; i++) {
 
             if (i % 3 == 0) {
-                itemArray.add(new ItemData(MultiTypeAdapter.TYPE_DOG, new Dog(i + "")));
+                itemArray.add( new Dog(i + ""));
             } else {
-                itemArray.add(new ItemData(MultiTypeAdapter.TYPE_CAT, new Cat(i + "")));
+                itemArray.add(new Cat(i + ""));
             }
         }
 //        itemArray.add(new ItemData<>(MultiTypeAdapter.TYPE_EMPTY, null));
-        itemArray.add(new ItemData(MultiTypeAdapter.TYPE_LOADING, null));
+        itemArray.add(new ItemData(MultiTypeAdapter.TYPE_LOADING));
     }
 
     int count = 1;
@@ -54,11 +54,11 @@ public class MultiTypeActivity extends AppCompatActivity implements LoadingDeleg
         recyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                List<Cat> cats = new LinkedList<>();
+                List<ItemData> cats = new LinkedList<>();
                 for (int i = 0; i < 3; i++) {
                     cats.add(new Cat("you are my love " + i));
                 }
-                ((MultiTypeAdapter) recyclerView.getAdapter()).notifyAfterLoadMore(MultiTypeAdapter.TYPE_CAT, cats, count < 3);
+                ((MultiTypeAdapter) recyclerView.getAdapter()).notifyAfterLoadMore(cats, count < 3);
                 count++;
             }
         }, 2000);

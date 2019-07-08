@@ -26,7 +26,7 @@ public class DogDelegate extends AdapterDelegate<DogDelegate.DogViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemArray itemArray, DogViewHolder vh, int position) {
-        Dog dog = (Dog) itemArray.get(position).getData();
+        Dog dog = (Dog) itemArray.get(position);
         vh.nameTV.setText("you are dog " + dog.name);
     }
 

@@ -12,7 +12,7 @@
         android:paddingLeft="16dp"
         android:gravity="center_vertical"
         android:textColor="@android:color/white"
-        android:background="@color/side_bar_wave_color"
+        android:background="@color/side_bar_wave_color_2"
         android:textSize="16sp"/>
 
     <View

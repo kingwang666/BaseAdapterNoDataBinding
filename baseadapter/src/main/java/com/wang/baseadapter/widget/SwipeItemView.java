@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
-
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;

@@ -1,15 +1,16 @@
 package com.wang.baseadapter.delegate;
 
 import android.animation.AnimatorSet;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
+import com.bumptech.glide.RequestBuilder;
 import com.wang.baseadapter.BaseRecyclerViewAdapter;
 import com.wang.baseadapter.animation.AlphaInAnimation;
 import com.wang.baseadapter.animation.BaseAnimation;
@@ -18,6 +19,7 @@ import com.wang.baseadapter.animation.SlideInBottomAnimation;
 import com.wang.baseadapter.animation.SlideInLeftAnimation;
 import com.wang.baseadapter.animation.SlideInRightAnimation;
 import com.wang.baseadapter.model.ItemArray;
+import com.wang.baseadapter.model.ItemData;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -67,9 +69,6 @@ public class AdapterDelegatesManager {
     public AdapterDelegatesManager() {
         mNoAnimTypes = new ArrayList<>(4);
         mNoAnimTypes.add(BaseRecyclerViewAdapter.TYPE_EMPTY);
-        mNoAnimTypes.add(BaseRecyclerViewAdapter.TYPE_FOOTER);
-        mNoAnimTypes.add(BaseRecyclerViewAdapter.TYPE_HEADER);
-        mNoAnimTypes.add(BaseRecyclerViewAdapter.TYPE_LOADING);
     }
 
     /**
@@ -223,7 +222,7 @@ public class AdapterDelegatesManager {
      *                  viewType
      */
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(ItemArray itemArray, RecyclerView.ViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray<? extends ItemData> itemArray, RecyclerView.ViewHolder vh, int position) {
         int type = vh.getItemViewType();
         getDelegateForViewType(type).onBindViewHolder(itemArray, vh, position);
         addAnimation(vh, type);
@@ -239,10 +238,15 @@ public class AdapterDelegatesManager {
      *                  viewType
      */
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(ItemArray itemArray, RecyclerView.ViewHolder vh, int position, List<Object> payloads) {
+    public void onBindViewHolder(ItemArray<? extends ItemData> itemArray, RecyclerView.ViewHolder vh, int position, List<Object> payloads) {
         int type = vh.getItemViewType();
         getDelegateForViewType(type).onBindViewHolder(itemArray, vh, position, payloads);
         addAnimation(vh, type);
+    }
+
+    public RequestBuilder<?> getPreloadRequestBuilder(ItemData data) {
+        int type = data.dataType;
+        return getDelegateForViewType(type).getPreloadRequestBuilder(data);
     }
 
     /**

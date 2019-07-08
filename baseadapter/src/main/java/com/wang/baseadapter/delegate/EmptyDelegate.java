@@ -2,11 +2,11 @@ package com.wang.baseadapter.delegate;
 
 import android.content.Context;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,42 +26,36 @@ public class EmptyDelegate extends AdapterDelegate<EmptyDelegate.EmptyViewHolder
     @DrawableRes
     private int mResId = -1;
 
-    private CharSequence mTitle;
-    @StringRes
-    private int mTitleRes = -1;
-
     private CharSequence mDesc;
     @StringRes
     private int mDescRes = -1;
 
     protected Context mContext;
 
-    public EmptyDelegate(@DrawableRes int resId, CharSequence title, CharSequence desc) {
+    public EmptyDelegate(@DrawableRes int resId, CharSequence desc) {
         this.mResId = resId;
-        this.mTitle = title;
         this.mDesc = desc;
     }
 
-    public EmptyDelegate(@DrawableRes int resId, @StringRes int title, @StringRes int desc) {
+    public EmptyDelegate(@DrawableRes int resId, @StringRes int desc) {
         this.mResId = resId;
-        this.mTitleRes = title;
         this.mDescRes = desc;
     }
 
     public EmptyDelegate(@DrawableRes int resId) {
-        this(resId, null, null);
+        this(resId, null);
     }
 
     public EmptyDelegate(CharSequence desc) {
-        this(-1, null, desc);
+        this(-1, desc);
     }
 
     public EmptyDelegate() {
-        this(-1, null, null);
+        this(-1, null);
     }
 
     @Override
-    public EmptyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EmptyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (mContext == null){
             mContext = parent.getContext();
         }
@@ -70,36 +64,25 @@ public class EmptyDelegate extends AdapterDelegate<EmptyDelegate.EmptyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ItemArray itemArray, EmptyViewHolder vh, int position) {
-        if (mTitleRes != -1) {
-            mTitle = mContext.getResources().getString(mTitleRes);
-        }
+    public void onBindViewHolder(@NonNull ItemArray itemArray, @NonNull EmptyViewHolder vh, int position) {
         if (mDescRes != -1) {
             mDesc = mContext.getResources().getString(mDescRes);
         }
-        if (addData(vh, mResId, mTitle, mDesc)) {
-            EmptyData data = (EmptyData) itemArray.get(position).getData();
+        if (addData(vh, mResId, mDesc)) {
+            EmptyData data = (EmptyData) itemArray.get(position);
             if (data != null) {
-                addData(vh, data.mResId, data.mTitle, data.mDesc);
+                addData(vh, data.mResId, data.mDesc);
             }
         }
     }
 
-    private boolean addData(EmptyViewHolder vh, int resId, CharSequence title, CharSequence desc) {
+    private boolean addData(EmptyViewHolder vh, int resId, CharSequence desc) {
         boolean next = true;
         if (resId == -1) {
             vh.mEmptyImg.setVisibility(View.GONE);
         } else {
             vh.mEmptyImg.setVisibility(View.VISIBLE);
             vh.mEmptyImg.setImageResource(resId);
-            next = false;
-        }
-        if (TextUtils.isEmpty(title)) {
-            vh.mTitleTV.setVisibility(View.GONE);
-        }
-        else {
-            vh.mTitleTV.setVisibility(View.VISIBLE);
-            vh.mTitleTV.setText(title);
             next = false;
         }
         if (TextUtils.isEmpty(desc)) {
@@ -115,15 +98,11 @@ public class EmptyDelegate extends AdapterDelegate<EmptyDelegate.EmptyViewHolder
     protected class EmptyViewHolder extends RecyclerView.ViewHolder {
 
         AppCompatImageView mEmptyImg;
-
-        AppCompatTextView mTitleTV;
-
         AppCompatTextView mEmptyTV;
 
         public EmptyViewHolder(View itemView) {
             super(itemView);
             mEmptyImg = (AppCompatImageView) itemView.findViewById(R.id.empty_img);
-            mTitleTV = (AppCompatTextView) itemView.findViewById(R.id.title_tv);
             mEmptyTV = (AppCompatTextView) itemView.findViewById(R.id.empty_tv);
         }
     }
