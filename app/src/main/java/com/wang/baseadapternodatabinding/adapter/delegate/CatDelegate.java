@@ -29,7 +29,7 @@ public class CatDelegate extends AdapterDelegate<CatDelegate.CatViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ItemArray<ItemData> itemArray, CatViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray itemArray, CatViewHolder vh, int position) {
         Cat cat = (Cat) itemArray.get(position);
         vh.nameTV.setText("you are cat " + cat.name);
     }

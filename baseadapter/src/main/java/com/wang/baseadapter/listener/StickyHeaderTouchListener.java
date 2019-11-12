@@ -1,6 +1,8 @@
 package com.wang.baseadapter.listener;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -30,12 +32,12 @@ public class StickyHeaderTouchListener implements RecyclerView.OnItemTouchListen
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView view, @NonNull MotionEvent e) {
         return this.mOnHeaderClickListener != null && mTapDetector.onTouchEvent(e);
     }
 
     @Override
-    public void onTouchEvent(RecyclerView view, MotionEvent e) {
+    public void onTouchEvent(@NonNull RecyclerView view, @NonNull MotionEvent e) {
 
     }
 

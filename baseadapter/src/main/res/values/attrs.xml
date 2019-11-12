@@ -16,5 +16,4 @@
         <attr name="sidebarShowDuration" format="integer"/>
     </declare-styleable>
 
-    <bool name="is_rtl">true</bool>
 </resources>

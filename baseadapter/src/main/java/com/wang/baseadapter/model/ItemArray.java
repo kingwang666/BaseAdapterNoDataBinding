@@ -1,18 +1,19 @@
 package com.wang.baseadapter.model;
 
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * RecyclerView列表类
  */
-public class ItemArray<T extends ItemData> extends ArrayList<T> {
+public class ItemArray extends ArrayList<TypeData> {
 
     public ItemArray(int initialCapacity) {
         super(initialCapacity);
@@ -22,7 +23,7 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
         super();
     }
 
-    public ItemArray(Collection<? extends T> c) {
+    public ItemArray(Collection<? extends TypeData> c) {
         super(c);
     }
 
@@ -34,7 +35,7 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
      */
     public int findFirstTypePosition(int type) {
         for (int i = 0; i < size(); i++) {
-            if (type == get(i).dataType) {
+            if (type == get(i).getDataType()) {
                 return i;
             }
         }
@@ -50,7 +51,7 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
      */
     public int findLastTypePosition(int type) {
         for (int i = size() - 1; i >= 0; i--) {
-            if (type == get(i).dataType) {
+            if (type == get(i).getDataType()) {
                 return i;
             }
         }
@@ -66,7 +67,7 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
      */
     public int findFirstNotTypePosition(int type) {
         for (int i = 0; i < size(); i++) {
-            if (type != get(i).dataType) {
+            if (type != get(i).getDataType()) {
                 return i;
             }
         }
@@ -82,7 +83,7 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
      */
     public int findLastNotTypePosition(int type) {
         for (int i = size() - 1; i >= 0; i--) {
-            if (type != get(i).dataType) {
+            if (type != get(i).getDataType()) {
                 return i;
             }
         }
@@ -96,7 +97,7 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
      * @param data 插入的数据
      * @return 对应的位置
      */
-    public int addAfterLast(int type, T data) {
+    public int addAfterLast(int type, TypeData data) {
         int position = findLastTypePosition(type);
         add(++position, data);
         return position;
@@ -109,7 +110,7 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
      * @param data 插入的数据
      * @return 对应的位置
      */
-    public int addBeforFirst(int type, T data) {
+    public int addBeforFirst(int type, TypeData data) {
         int position = findFirstTypePosition(type);
         add(position, data);
         return position;
@@ -138,10 +139,10 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
      */
     public int removeAllType(int type) {
         int count = 0;
-        Iterator<T> iterator = iterator();
+        Iterator<TypeData> iterator = iterator();
         while (iterator.hasNext()) {
-            ItemData item = iterator.next();
-            if (item.dataType == type) {
+            TypeData item = iterator.next();
+            if (item.getDataType() == type) {
                 iterator.remove();
                 count++;
             }
@@ -156,12 +157,60 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
      * @param datas 数据
      * @return 数据数目
      */
-    public int addAllType(int type, List<T> datas) {
+    public int addAllType(int type, List<? extends TypeData> datas) {
         int count = 0;
         int position = findLastTypePosition(type);
         addAll(position, datas);
         return count;
 
+    }
+
+    /**
+     * 在列表最后添加多个数据
+     *
+     * @param type  类型
+     * @param datas 数据
+     * @param <E>   数据类型
+     * @return 数据数目
+     */
+    public <E> int addAllAtLast(int type, List<E> datas) {
+        int count = 0;
+        for (E e : datas) {
+            if (e instanceof ItemData) {
+                ItemData data = (ItemData) e;
+                data.dataType = type;
+                add(data);
+            } else {
+                add(new CommData(type, e));
+            }
+
+            count++;
+        }
+        return count;
+    }
+
+    /**
+     * 在指定位置添加多个数据
+     *
+     * @param position 开始插入数据位置
+     * @param type     类型
+     * @param datas    数据
+     * @param <E>      数据类型
+     * @return 数据数目
+     */
+    public <E> int addAll(int position, int type, List<E> datas) {
+        int count = 0;
+        for (E e : datas) {
+            if (e instanceof ItemData){
+                ItemData data = (ItemData) e;
+                data.dataType = type;
+                add(position + count, data);
+            }else {
+                add(position + count, new CommData(type, e));
+            }
+            count++;
+        }
+        return count;
     }
 
     /**
@@ -189,12 +238,12 @@ public class ItemArray<T extends ItemData> extends ArrayList<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public ItemArray<T> sortNew(Comparator<T> c){
+    public ItemArray sortNew(Comparator<? extends TypeData> c) {
         Object[] a = toArray();
         Arrays.sort(a, (Comparator) c);
-        ItemArray<T> result = new ItemArray<>(a.length);
+        ItemArray result = new ItemArray(a.length);
         for (Object anA : a) {
-            result.add((T) anA);
+            result.add((TypeData) anA);
         }
         return result;
     }

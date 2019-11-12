@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Px;
+import androidx.collection.SparseArrayCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Author: bigwang
  * Description:
  */
-public class MarginItemDecoration extends RecyclerView.ItemDecoration {
+public class MarginTypeItemDecoration extends RecyclerView.ItemDecoration {
 
     public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
     public static final int VERTICAL = LinearLayout.VERTICAL;
@@ -26,19 +27,22 @@ public class MarginItemDecoration extends RecyclerView.ItemDecoration {
      */
     private int mOrientation;
 
+    private int mType;
 
-    public MarginItemDecoration(Context context, int margin) {
-        this(dp2px(context, margin), VERTICAL);
+
+    public MarginTypeItemDecoration(Context context, int type, int margin) {
+        this(type, dp2px(context, margin), VERTICAL);
     }
 
-    public MarginItemDecoration(Context context, int margin, int orientation) {
-        this(dp2px(context, margin), orientation);
+    public MarginTypeItemDecoration(Context context, int type, int margin, int orientation) {
+        this(type, dp2px(context, margin), orientation);
     }
 
 
-    public MarginItemDecoration(@Px int margin, int orientation) {
+    public MarginTypeItemDecoration(int type, @Px int margin, int orientation) {
         mMargin = margin;
         mOrientation = orientation;
+        mType = type;
     }
 
     /**
@@ -68,7 +72,10 @@ public class MarginItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent,
                                @NonNull RecyclerView.State state) {
-        if (mMargin == 0 || parent.getChildAdapterPosition(view) == 0) {
+        RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
+        int position = holder != null ? holder.getAdapterPosition() : RecyclerView.NO_POSITION;
+        int type = holder != null ? holder.getItemViewType() : RecyclerView.NO_POSITION;
+        if (mMargin == 0 || position == 0 || position == RecyclerView.NO_POSITION || mType != type) {
             outRect.set(0, 0, 0, 0);
             return;
         }

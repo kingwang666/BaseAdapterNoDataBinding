@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Author: bigwang
  * Description:
  */
-public class ColorItemDecoration extends RecyclerView.ItemDecoration {
+public class ColorTypeItemDecoration extends RecyclerView.ItemDecoration {
 
     public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
     public static final int VERTICAL = LinearLayout.VERTICAL;
@@ -35,34 +35,36 @@ public class ColorItemDecoration extends RecyclerView.ItemDecoration {
 
     private final Rect mBounds = new Rect();
 
-    public ColorItemDecoration(Context context, @ColorRes int color) {
-        this(ContextCompat.getColor(context, color), 1, 0, VERTICAL);
+    private int mType;
+
+    public ColorTypeItemDecoration(Context context, int type, @ColorRes int color) {
+        this(type, ContextCompat.getColor(context, color), 1, 0, VERTICAL);
     }
 
-    public ColorItemDecoration(Context context, @ColorRes int color, int orientation) {
-        this(ContextCompat.getColor(context, color), 1, 0, orientation);
+    public ColorTypeItemDecoration(Context context, int type, @ColorRes int color, int orientation) {
+        this(type, ContextCompat.getColor(context, color), 1, 0, orientation);
     }
 
-    public ColorItemDecoration(@ColorInt int color) {
-        this(color, 1, 0, VERTICAL);
+    public ColorTypeItemDecoration(int type, @ColorInt int color) {
+        this(type, color, 1, 0, VERTICAL);
     }
 
-    public ColorItemDecoration(@ColorInt int color, int orientation) {
-        this(color, 1, 0, orientation);
+    public ColorTypeItemDecoration(int type, @ColorInt int color, int orientation) {
+        this(type, color, 1, 0, orientation);
     }
 
-    public ColorItemDecoration(@ColorInt int color, @Px int margin, int orientation) {
-        this(color, 1, margin, orientation);
+    public ColorTypeItemDecoration(int type, @ColorInt int color, @Px int margin, int orientation) {
+        this(type, color, 1, margin, orientation);
     }
 
 
-    public ColorItemDecoration(@ColorInt int color, @Px int dividerSize, @Px int margin, int orientation) {
+    public ColorTypeItemDecoration(int type, @ColorInt int color, @Px int dividerSize, @Px int margin, int orientation) {
+        mType = type;
         mDividerSize = dividerSize;
         mMargin = margin;
         mOrientation = orientation;
         mPaint = new Paint();
-        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mPaint.setDither(true);
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);          //抗锯齿
         mPaint.setColor(color);        //默认颜色
     }
@@ -96,7 +98,7 @@ public class ColorItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-        if (mDividerSize == -1 ||  parent.getChildAdapterPosition(view) == state.getItemCount()) {
+        if (mDividerSize == -1 || parent.getChildAdapterPosition(view) == state.getItemCount()) {
             outRect.set(0, 0, 0, 0);
             return;
         }

@@ -20,7 +20,7 @@ import java.util.List;
 public class MultiTypeActivity extends AppCompatActivity implements LoadingDelegate.OnRequestMoreListener {
 
     private RecyclerView recyclerView;
-    private ItemArray<ItemData> itemArray;
+    private ItemArray itemArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class MultiTypeActivity extends AppCompatActivity implements LoadingDeleg
     }
 
     private void initArray() {
-        itemArray = new ItemArray<>();
+        itemArray = new ItemArray();
         for (int i = 0; i < 20; i++) {
 
             if (i % 3 == 0) {

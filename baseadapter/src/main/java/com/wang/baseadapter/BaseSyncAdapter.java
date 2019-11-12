@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.wang.baseadapter.delegate.AdapterDelegatesManager;
 import com.wang.baseadapter.listener.DefaultItemCallback;
 import com.wang.baseadapter.model.ItemArray;
-import com.wang.baseadapter.model.ItemData;
+import com.wang.baseadapter.model.TypeData;
 
 import java.util.List;
 
@@ -18,21 +18,21 @@ import java.util.List;
  */
 public abstract class BaseSyncAdapter extends BaseDelegateAdapter {
 
-    private final DiffUtil.ItemCallback<ItemData> mCallback;
-    protected ItemArray<ItemData> mItemArray;
+    private final DiffUtil.ItemCallback<TypeData> mCallback;
+    protected ItemArray mItemArray;
 
     public BaseSyncAdapter() {
         this(null, null);
     }
 
-    public BaseSyncAdapter(@Nullable DiffUtil.ItemCallback<ItemData> callback) {
+    public BaseSyncAdapter(@Nullable DiffUtil.ItemCallback<TypeData> callback) {
         this(null, callback);
     }
 
-    public BaseSyncAdapter(@Nullable AdapterDelegatesManager delegatesManager, @Nullable DiffUtil.ItemCallback<ItemData> callback) {
+    public BaseSyncAdapter(@Nullable AdapterDelegatesManager delegatesManager, @Nullable DiffUtil.ItemCallback<TypeData> callback) {
         super(delegatesManager);
         mCallback = callback == null ? new DefaultItemCallback() : callback;
-        mItemArray = new ItemArray<>();
+        mItemArray = new ItemArray();
     }
 
     @Override
@@ -52,7 +52,7 @@ public abstract class BaseSyncAdapter extends BaseDelegateAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return mItemArray.get(position).dataType;
+        return mItemArray.get(position).getDataType();
     }
 
     /**
@@ -61,11 +61,11 @@ public abstract class BaseSyncAdapter extends BaseDelegateAdapter {
      * @return The items / data source
      */
     @Override
-    public ItemArray<ItemData> getItems() {
+    public ItemArray getItems() {
         return mItemArray;
     }
 
-    public void submitList(final ItemArray<ItemData> newList) {
+    public void submitList(final ItemArray newList) {
         if (newList == mItemArray) {
             // nothing to do
             return;
@@ -98,7 +98,7 @@ public abstract class BaseSyncAdapter extends BaseDelegateAdapter {
             return;
         }
 
-        final List<? extends ItemData> oldList = mItemArray;
+        final List<? extends TypeData> oldList = mItemArray;
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {

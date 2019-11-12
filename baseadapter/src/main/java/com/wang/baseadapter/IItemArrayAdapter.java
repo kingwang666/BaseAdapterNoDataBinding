@@ -1,7 +1,6 @@
 package com.wang.baseadapter;
 
 import com.wang.baseadapter.model.ItemArray;
-import com.wang.baseadapter.model.ItemData;
 
 /**
  * Author: wangxiaojie6
@@ -9,5 +8,5 @@ import com.wang.baseadapter.model.ItemData;
  */
 public interface IItemArrayAdapter {
 
-    ItemArray<ItemData> getItems();
+    ItemArray getItems();
 }

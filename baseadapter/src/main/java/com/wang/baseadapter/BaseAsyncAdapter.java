@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.wang.baseadapter.delegate.AdapterDelegatesManager;
 import com.wang.baseadapter.listener.DefaultItemCallback;
 import com.wang.baseadapter.model.ItemArray;
-import com.wang.baseadapter.model.ItemData;
+import com.wang.baseadapter.model.TypeData;
 import com.wang.baseadapter.util.AsyncListDiffer;
 
 import java.util.List;
@@ -28,11 +28,11 @@ public abstract class BaseAsyncAdapter extends BaseDelegateAdapter {
         this(null, null);
     }
 
-    public BaseAsyncAdapter(@Nullable DiffUtil.ItemCallback<ItemData> callback) {
+    public BaseAsyncAdapter(@Nullable DiffUtil.ItemCallback<TypeData> callback) {
         this(null, callback);
     }
 
-    public BaseAsyncAdapter(@Nullable AdapterDelegatesManager delegatesManager, @Nullable DiffUtil.ItemCallback<ItemData> callback) {
+    public BaseAsyncAdapter(@Nullable AdapterDelegatesManager delegatesManager, @Nullable DiffUtil.ItemCallback<TypeData> callback) {
         super(delegatesManager);
         mLock = new ReentrantReadWriteLock();
         mDiffer = new AsyncListDiffer(this, callback == null ? new DefaultItemCallback() : callback, mLock);
@@ -50,8 +50,8 @@ public abstract class BaseAsyncAdapter extends BaseDelegateAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        List<ItemData> current = mDiffer.getCurrentList();
-        return current.get(position).dataType;
+        List<TypeData> current = mDiffer.getCurrentList();
+        return current.get(position).getDataType();
     }
 
     @Override
@@ -63,19 +63,19 @@ public abstract class BaseAsyncAdapter extends BaseDelegateAdapter {
      * 载入数据
      *
      */
-    public void submitList(ItemArray<ItemData> itemArray) {
+    public void submitList(ItemArray itemArray) {
         mDiffer.submitList(itemArray);
     }
 
     @Override
-    public ItemArray<ItemData> getItems() {
+    public ItemArray getItems() {
         return mDiffer.getCurrentList();
     }
 
-    public void addItem(int position, ItemData data){
+    public void addItem(int position, TypeData data){
         mLock.writeLock().lock();
         try {
-            ItemArray<ItemData> array = mDiffer.getCurrentList();
+            ItemArray array = mDiffer.getCurrentList();
             array.add(position, data);
             notifyItemInserted(position);
         }finally {
@@ -83,10 +83,10 @@ public abstract class BaseAsyncAdapter extends BaseDelegateAdapter {
         }
     }
 
-    public void addItems(int position, List<ItemData> data){
+    public void addItems(int position, List<? extends TypeData> data){
         mLock.writeLock().lock();
         try {
-            ItemArray<ItemData> array = mDiffer.getCurrentList();
+            ItemArray array = mDiffer.getCurrentList();
             array.addAll(position, data);
             notifyItemRangeInserted(position, data.size());
         }finally {

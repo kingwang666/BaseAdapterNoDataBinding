@@ -1,14 +1,20 @@
 package com.wang.baseadapter.model;
 
-
 /**
- * 列表数据类
+ * Created on 2019/8/5.
+ * Author: bigwang
+ * Description:
  */
-public class ItemData {
+public class ItemData implements TypeData {
 
-    public int dataType;
+    public transient int dataType;
 
     public ItemData(int dataType) {
         this.dataType = dataType;
+    }
+
+    @Override
+    public int getDataType() {
+        return dataType;
     }
 }

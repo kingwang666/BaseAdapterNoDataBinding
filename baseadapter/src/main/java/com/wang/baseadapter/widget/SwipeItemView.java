@@ -186,7 +186,7 @@ public class SwipeItemView extends LinearLayout {
     }
 
     /**
-     * smoothly close surface.
+     * smoothly ic_close surface.
      */
     public void close() {
         close(true, true);
@@ -197,7 +197,7 @@ public class SwipeItemView extends LinearLayout {
     }
 
     /**
-     * close surface
+     * ic_close surface
      *
      * @param smooth smoothly or not.
      * @param notify if notify all the listeners.

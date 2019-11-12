@@ -1,13 +1,12 @@
 package com.wang.baseadapter;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wang.baseadapter.listener.DefaultItemCallback;
 import com.wang.baseadapter.model.ItemArray;
-import com.wang.baseadapter.model.ItemData;
+import com.wang.baseadapter.model.TypeData;
 
 import java.util.List;
 
@@ -17,16 +16,16 @@ import java.util.List;
  */
 abstract public class DiffSyncAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements IItemArrayAdapter {
 
-    private final DiffUtil.ItemCallback<ItemData> mCallback;
-    protected ItemArray<ItemData> mItemArray;
+    private final DiffUtil.ItemCallback<TypeData> mCallback;
+    protected ItemArray mItemArray;
 
     public DiffSyncAdapter() {
         this(null);
     }
 
-    public DiffSyncAdapter(@Nullable DiffUtil.ItemCallback<ItemData> callback) {
+    public DiffSyncAdapter(@Nullable DiffUtil.ItemCallback<TypeData> callback) {
         mCallback = callback == null ? new DefaultItemCallback() : callback;
-        mItemArray = new ItemArray<>();
+        mItemArray = new ItemArray();
     }
 
     @Override
@@ -36,7 +35,7 @@ abstract public class DiffSyncAdapter<VH extends RecyclerView.ViewHolder> extend
 
     @Override
     public int getItemViewType(int position) {
-        return mItemArray.get(position).dataType;
+        return mItemArray.get(position).getDataType();
     }
 
     /**
@@ -45,11 +44,11 @@ abstract public class DiffSyncAdapter<VH extends RecyclerView.ViewHolder> extend
      * @return The items / data source
      */
     @Override
-    public ItemArray<ItemData> getItems() {
+    public ItemArray getItems() {
         return mItemArray;
     }
 
-    public void submitList(final ItemArray<ItemData> newList) {
+    public void submitList(final ItemArray newList) {
         if (newList == mItemArray) {
             // nothing to do
             return;
@@ -82,7 +81,7 @@ abstract public class DiffSyncAdapter<VH extends RecyclerView.ViewHolder> extend
             return;
         }
 
-        final List<ItemData> oldList = mItemArray;
+        final List<TypeData> oldList = mItemArray;
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {

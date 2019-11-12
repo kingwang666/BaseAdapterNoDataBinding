@@ -190,7 +190,7 @@ class GravityDelegate {
                 return null;
             } else {
                 // If the child wasn't returned, we need to return
-                // the next view close to the start.
+                // the next view ic_close to the start.
                 return layoutManager.findViewByPosition(firstChild + offset);
             }
         }

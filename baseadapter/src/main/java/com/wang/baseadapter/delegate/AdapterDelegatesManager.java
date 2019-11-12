@@ -12,6 +12,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.bumptech.glide.RequestBuilder;
 import com.wang.baseadapter.BaseRecyclerViewAdapter;
+import com.wang.baseadapter.ViewHolder;
 import com.wang.baseadapter.animation.AlphaInAnimation;
 import com.wang.baseadapter.animation.BaseAnimation;
 import com.wang.baseadapter.animation.ScaleInAnimation;
@@ -19,7 +20,7 @@ import com.wang.baseadapter.animation.SlideInBottomAnimation;
 import com.wang.baseadapter.animation.SlideInLeftAnimation;
 import com.wang.baseadapter.animation.SlideInRightAnimation;
 import com.wang.baseadapter.model.ItemArray;
-import com.wang.baseadapter.model.ItemData;
+import com.wang.baseadapter.model.TypeData;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -222,7 +223,7 @@ public class AdapterDelegatesManager {
      *                  viewType
      */
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(ItemArray<? extends ItemData> itemArray, RecyclerView.ViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray itemArray, RecyclerView.ViewHolder vh, int position) {
         int type = vh.getItemViewType();
         getDelegateForViewType(type).onBindViewHolder(itemArray, vh, position);
         addAnimation(vh, type);
@@ -238,14 +239,14 @@ public class AdapterDelegatesManager {
      *                  viewType
      */
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(ItemArray<? extends ItemData> itemArray, RecyclerView.ViewHolder vh, int position, List<Object> payloads) {
+    public void onBindViewHolder(ItemArray itemArray, RecyclerView.ViewHolder vh, int position, List<Object> payloads) {
         int type = vh.getItemViewType();
         getDelegateForViewType(type).onBindViewHolder(itemArray, vh, position, payloads);
         addAnimation(vh, type);
     }
 
-    public RequestBuilder<?> getPreloadRequestBuilder(ItemData data) {
-        int type = data.dataType;
+    public RequestBuilder<?> getPreloadRequestBuilder(TypeData data) {
+        int type = data.getDataType();
         return getDelegateForViewType(type).getPreloadRequestBuilder(data);
     }
 

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wang.baseadapter.model.ItemArray;
-import com.wang.baseadapter.model.ItemData;
 import com.wang.baseadapter.util.SwipeAdapterInterface;
 import com.wang.baseadapter.util.SwipeItemMangerImpl;
 import com.wang.baseadapter.util.SwipeItemMangerInterface;
@@ -17,7 +16,7 @@ public abstract class RecyclerSwipeAdapter extends BaseRecyclerViewAdapter imple
 
     protected SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
 
-    public RecyclerSwipeAdapter(ItemArray<ItemData> itemArray) {
+    public RecyclerSwipeAdapter(ItemArray itemArray) {
         super(itemArray);
     }
 

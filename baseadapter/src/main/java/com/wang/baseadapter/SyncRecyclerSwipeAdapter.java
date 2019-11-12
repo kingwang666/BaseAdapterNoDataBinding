@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wang.baseadapter.delegate.AdapterDelegatesManager;
-import com.wang.baseadapter.model.ItemData;
+import com.wang.baseadapter.model.TypeData;
 import com.wang.baseadapter.util.SwipeAdapterInterface;
 import com.wang.baseadapter.util.SwipeItemMangerImpl;
 import com.wang.baseadapter.util.SwipeItemMangerInterface;
@@ -22,11 +22,11 @@ public abstract class SyncRecyclerSwipeAdapter extends BaseSyncAdapter implement
 
     protected SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
 
-    public SyncRecyclerSwipeAdapter(@Nullable DiffUtil.ItemCallback<ItemData> callback) {
+    public SyncRecyclerSwipeAdapter(@Nullable DiffUtil.ItemCallback<TypeData> callback) {
         super(callback);
     }
 
-    public SyncRecyclerSwipeAdapter(@Nullable AdapterDelegatesManager delegatesManager, @Nullable DiffUtil.ItemCallback<ItemData> callback) {
+    public SyncRecyclerSwipeAdapter(@Nullable AdapterDelegatesManager delegatesManager, @Nullable DiffUtil.ItemCallback<TypeData> callback) {
         super(delegatesManager, callback);
     }
 

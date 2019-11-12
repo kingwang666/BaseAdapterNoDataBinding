@@ -30,7 +30,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
 
     private RecyclerView mRecyclerView;
     private WaveSideBarView mSideBarView;
-    private ItemArray<ItemData> mItemArray;
+    private ItemArray mItemArray;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +58,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
             public void onLetterChange(String letter) {
                 int size = mItemArray.size();
                 for (int i = 0; i < size; i++) {
-                    ItemData data = mItemArray.get(i);
+                    ItemData data = (ItemData) mItemArray.get(i);
                     if (data.dataType == StickyHeaderAdapter.TYPE_CHAPTER) {
                         Chapter chapter = (Chapter) data;
                         if (chapter.name.startsWith(letter)) {
@@ -77,7 +77,7 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
 
 
     private void initArray() {
-        mItemArray = new ItemArray<>();
+        mItemArray = new ItemArray();
         for (int i = 1; i < 15; i++) {
             Chapter chapter = new Chapter("第" + i + "章", 9);
             mItemArray.add(chapter);

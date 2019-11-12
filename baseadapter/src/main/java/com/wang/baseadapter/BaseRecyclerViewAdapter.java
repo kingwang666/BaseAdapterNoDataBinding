@@ -8,20 +8,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.wang.baseadapter.delegate.AdapterDelegatesManager;
 import com.wang.baseadapter.delegate.LoadingDelegate;
 import com.wang.baseadapter.model.ItemArray;
-import com.wang.baseadapter.model.ItemData;
+import com.wang.baseadapter.model.TypeData;
 
 import java.util.List;
 
 
 public abstract class BaseRecyclerViewAdapter extends BaseDelegateAdapter {
     
-    protected ItemArray<ItemData> itemArray;
+    protected ItemArray itemArray;
 
-    public BaseRecyclerViewAdapter(ItemArray<ItemData> itemArray) {
+    public BaseRecyclerViewAdapter(ItemArray itemArray) {
         this(null, itemArray);
     }
 
-    public BaseRecyclerViewAdapter(@Nullable AdapterDelegatesManager delegatesManager, ItemArray<ItemData> itemArray) {
+    public BaseRecyclerViewAdapter(@Nullable AdapterDelegatesManager delegatesManager, ItemArray itemArray) {
         super(delegatesManager);
         this.itemArray = itemArray;
     }
@@ -40,7 +40,7 @@ public abstract class BaseRecyclerViewAdapter extends BaseDelegateAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return itemArray.get(position).dataType;
+        return itemArray.get(position).getDataType();
     }
 
     @Override
@@ -54,7 +54,7 @@ public abstract class BaseRecyclerViewAdapter extends BaseDelegateAdapter {
      * @return The items / data source
      */
     @Override
-    public ItemArray<ItemData> getItems() {
+    public ItemArray getItems() {
         return itemArray;
     }
 
@@ -62,7 +62,7 @@ public abstract class BaseRecyclerViewAdapter extends BaseDelegateAdapter {
      * 载入数据
      * @param mItemArray
      */
-    public void setItems(ItemArray<ItemData> mItemArray) {
+    public void setItems(ItemArray mItemArray) {
         this.itemArray = mItemArray;
         notifyDataSetChanged();
     }
@@ -71,9 +71,8 @@ public abstract class BaseRecyclerViewAdapter extends BaseDelegateAdapter {
      * 当{@link LoadingDelegate}的mOpenMore 是true时，没错自动加载更多需调用此方法
      * @param datas 需插入的数据
      * @param isHaveMore 是否还有数据
-     * @param <E>
      */
-    public <E> void notifyAfterLoadMore(List<ItemData> datas, boolean isHaveMore) {
+    public void notifyAfterLoadMore(List<? extends TypeData> datas, boolean isHaveMore) {
         if (itemArray.findFirstTypePosition(TYPE_LOADING) != -1 && itemArray.findFirstTypePosition(TYPE_FOOTER) != -1){
             itemArray.addAll(itemArray.size() - 2, datas);
         }

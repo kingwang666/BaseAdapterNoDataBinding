@@ -33,7 +33,7 @@ public class ChapterDelegate extends AdapterDelegate<ChapterDelegate.ChapterView
     }
 
     @Override
-    public void onBindViewHolder(ItemArray<ItemData> itemArray, ChapterViewHolder vh, int position) {
+    public void onBindViewHolder(ItemArray itemArray, ChapterViewHolder vh, int position) {
         Chapter chapter = (Chapter) itemArray.get(position);
         vh.nameTV.setText(chapter.name + " " + (chapter.isOpen ? "open" : "close"));
     }

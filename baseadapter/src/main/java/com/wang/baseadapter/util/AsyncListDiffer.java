@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListUpdateCallback;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wang.baseadapter.model.ItemArray;
-import com.wang.baseadapter.model.ItemData;
+import com.wang.baseadapter.model.TypeData;
 
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -22,10 +22,10 @@ import java.util.concurrent.locks.ReadWriteLock;
 public class AsyncListDiffer {
 
     private final ListUpdateCallback mUpdateCallback;
-    private final AsyncDifferConfig<ItemData> mConfig;
+    private final AsyncDifferConfig<TypeData> mConfig;
     private final ReadWriteLock mLock;
     @NonNull
-    private ItemArray<ItemData> mList = new ItemArray<>();
+    private ItemArray mList = new ItemArray();
 
     // Max generation of currently scheduled runnable
     private int mMaxScheduledGeneration;
@@ -40,7 +40,7 @@ public class AsyncListDiffer {
      * @see DiffUtil.DiffResult#dispatchUpdatesTo(RecyclerView.Adapter)
      */
     public AsyncListDiffer(@NonNull RecyclerView.Adapter adapter,
-                           @NonNull DiffUtil.ItemCallback<ItemData> diffCallback,
+                           @NonNull DiffUtil.ItemCallback<TypeData> diffCallback,
                            @NonNull ReadWriteLock lock) {
         mUpdateCallback = new AdapterListUpdateCallback(adapter);
         mConfig = new AsyncDifferConfig.Builder<>(diffCallback).build();
@@ -58,7 +58,7 @@ public class AsyncListDiffer {
      */
     @SuppressWarnings("WeakerAccess")
     public AsyncListDiffer(@NonNull ListUpdateCallback listUpdateCallback,
-                           @NonNull AsyncDifferConfig<ItemData> config,
+                           @NonNull AsyncDifferConfig<TypeData> config,
                            @NonNull ReadWriteLock lock) {
         mUpdateCallback = listUpdateCallback;
         mConfig = config;
@@ -78,7 +78,7 @@ public class AsyncListDiffer {
      * @return current List.
      */
     @NonNull
-    public ItemArray<ItemData> getCurrentList() {
+    public ItemArray getCurrentList() {
         return mList;
     }
 
@@ -94,7 +94,7 @@ public class AsyncListDiffer {
      */
     @SuppressWarnings("WeakerAccess")
     @SuppressLint("RestrictedApi")
-    public void submitList(final ItemArray<ItemData> newList) {
+    public void submitList(final ItemArray newList) {
         if (newList == mList) {
             // nothing to do
             return;
@@ -121,7 +121,7 @@ public class AsyncListDiffer {
             return;
         }
 
-        final List<ItemData> oldList = mList;
+        final List<TypeData> oldList = mList;
         mConfig.getBackgroundThreadExecutor().execute(new Runnable() {
 
             @Override
@@ -173,7 +173,7 @@ public class AsyncListDiffer {
         });
     }
 
-    private void latchList(@NonNull ItemArray<ItemData> newList, @NonNull DiffUtil.DiffResult diffResult) {
+    private void latchList(@NonNull ItemArray newList, @NonNull DiffUtil.DiffResult diffResult) {
         mList = newList;
         diffResult.dispatchUpdatesTo(mUpdateCallback);
     }

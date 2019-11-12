@@ -9,7 +9,7 @@ import com.wang.baseadapter.BaseRecyclerViewAdapter;
  * on 2016/12/28
  */
 
-public class EmptyData extends ItemData {
+public class EmptyData implements TypeData {
 
     @DrawableRes
     public int mResId;
@@ -17,7 +17,6 @@ public class EmptyData extends ItemData {
     public CharSequence mDesc;
 
     public EmptyData(int resId, CharSequence desc) {
-        super(BaseRecyclerViewAdapter.TYPE_EMPTY);
         mResId = resId;
         mDesc = desc;
     }
@@ -32,5 +31,10 @@ public class EmptyData extends ItemData {
 
     public EmptyData() {
         this(-1, null);
+    }
+
+    @Override
+    public int getDataType() {
+        return BaseRecyclerViewAdapter.TYPE_EMPTY;
     }
 }
