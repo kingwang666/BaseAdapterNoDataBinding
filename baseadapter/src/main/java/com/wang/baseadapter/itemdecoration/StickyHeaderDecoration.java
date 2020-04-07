@@ -19,6 +19,13 @@ import com.wang.baseadapter.SwipeStickyAdapter;
 
 public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
 
+    private static final StickyHeaderCreator DEFAULT_CREATOR = new StickyHeaderCreator() {
+        @Override
+        public boolean create(RecyclerView parent, int adapterPosition) {
+            return true;
+        }
+    };
+
     private int mHeaderPosition;
     private int mCurrentItemType;
     private int mStickyHeaderTop;
@@ -31,6 +38,7 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
 
     private Drawable mBackground;
     private boolean mBackgroundSet = false;
+    private boolean mHeaderHaveMarginTop;
 
 
     private final SparseArray<StickyHeaderCreator> mTypeStickyHeaderFactories = new SparseArray<>();
@@ -41,16 +49,28 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
         }
     };
 
-    public StickyHeaderDecoration() {
-        this.mHeaderPosition = -1;
-        this.mCurrentItemType = -1;
+
+    public StickyHeaderDecoration(int... viewTypes) {
+        this(false, viewTypes);
     }
 
+    public StickyHeaderDecoration(boolean headerHaveMarginTop, int... viewTypes) {
+        this(headerHaveMarginTop);
+        if (viewTypes != null && viewTypes.length > 0) {
+            for (int viewType : viewTypes) {
+                registerTypePinnedHeader(viewType);
+            }
+        }
+    }
 
-    public StickyHeaderDecoration(int viewType) {
+    public StickyHeaderDecoration() {
+        this(false);
+    }
+
+    public StickyHeaderDecoration(boolean headerHaveMarginTop) {
         this.mHeaderPosition = -1;
         this.mCurrentItemType = -1;
-        registerTypePinnedHeader(viewType);
+        mHeaderHaveMarginTop = headerHaveMarginTop;
     }
 
     @Override
@@ -61,8 +81,9 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
             View v = parent.findChildViewUnder(c.getWidth() / 2f, mStickyView.getHeight() + 0.5f);
 //            View firstVisibleItemView = parent.getLayoutManager().getChildAt(0);
 //            int firstVisiblePosition = ((RecyclerView.LayoutParams) firstVisibleItemView.getLayoutParams()).getViewAdapterPosition();
-            if (isStickyView(parent, v)) {
-                mStickyHeaderTop = v.getTop() - mStickyView.getHeight();
+            int position;
+            if (v != null && isStickyView(parent, (position = parent.getChildAdapterPosition(v)))) {
+                mStickyHeaderTop = v.getTop() - mStickyView.getHeight() - (position == 0 ? parent.getPaddingTop() : 0);
             } else {
                 mStickyHeaderTop = 0;
             }
@@ -114,7 +135,12 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
         }
         int firstVisiblePosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
         int firstCompletelyVisiblePosition = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
+
         int headerPosition = findStickyHeaderPosition(parent, firstVisiblePosition);
+        if (mHeaderHaveMarginTop && isNotViewHolderTop(parent, headerPosition)) {
+            firstCompletelyVisiblePosition--;
+            headerPosition = findStickyHeaderPosition(parent, firstVisiblePosition - 1);
+        }
         if (headerPosition == -1 || (headerPosition == firstCompletelyVisiblePosition)) {
             resetPinnedHeader();
             return;
@@ -132,10 +158,10 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
             }
 
             mStickyView = stickyViewHolder.itemView;
-            if (mBackgroundSet){
+            if (mBackgroundSet) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     mStickyView.setBackground(mBackground);
-                }else {
+                } else {
                     mStickyView.setBackgroundDrawable(mBackground);
                 }
             }
@@ -182,6 +208,16 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
         return -1;
     }
 
+    private boolean isNotViewHolderTop(RecyclerView parent, int position) {
+        RecyclerView.ViewHolder holder = parent.findViewHolderForAdapterPosition(position);
+        ViewGroup.LayoutParams params = holder == null ? null : holder.itemView.getLayoutParams();
+        if (params instanceof ViewGroup.MarginLayoutParams && ((ViewGroup.MarginLayoutParams) params).topMargin > 0) {
+
+            return holder.itemView.getTop() > 0;
+        }
+        return false;
+    }
+
     private boolean isStickyViewType(RecyclerView parent, int adapterPosition, int viewType) {
         StickyHeaderCreator stickyHeaderCreator = mTypeStickyHeaderFactories.get(viewType);
 
@@ -193,6 +229,10 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
             return false;
         }
         int position = parent.getChildAdapterPosition(v);
+        return isStickyView(parent, position);
+    }
+
+    private boolean isStickyView(RecyclerView parent, int position) {
         if (position == RecyclerView.NO_POSITION) {
             return false;
         }
@@ -228,26 +268,25 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
     public void setBackground(Drawable background) {
         mBackground = background;
         mBackgroundSet = true;
-        if (mStickyView != null){
+        if (mStickyView != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 mStickyView.setBackground(mBackground);
-            }else {
+            } else {
                 mStickyView.setBackgroundDrawable(mBackground);
             }
         }
     }
 
-    public void registerTypePinnedHeader(int itemType, StickyHeaderCreator stickyHeaderCreator) {
-        mTypeStickyHeaderFactories.put(itemType, stickyHeaderCreator);
+    public void setHeaderHaveMarginTop(boolean headerHaveMarginTop) {
+        mHeaderHaveMarginTop = headerHaveMarginTop;
     }
 
     public void registerTypePinnedHeader(int itemType) {
-        mTypeStickyHeaderFactories.put(itemType, new StickyHeaderCreator() {
-            @Override
-            public boolean create(RecyclerView parent, int adapterPosition) {
-                return true;
-            }
-        });
+        this.registerTypePinnedHeader(itemType, DEFAULT_CREATOR);
+    }
+
+    public void registerTypePinnedHeader(int itemType, StickyHeaderCreator stickyHeaderCreator) {
+        mTypeStickyHeaderFactories.put(itemType, stickyHeaderCreator);
     }
 
 

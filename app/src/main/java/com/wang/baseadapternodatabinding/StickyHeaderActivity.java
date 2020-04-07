@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.wang.baseadapter.listener.StickyHeaderTouchListener2;
 import com.wang.baseadapter.util.GravitySnapHelper;
 import com.wang.baseadapter.util.SnappingLinearLayoutManager;
 import com.wang.baseadapter.itemdecoration.StickyHeaderDecoration;
@@ -41,9 +42,10 @@ public class StickyHeaderActivity extends AppCompatActivity implements OnRecycle
         mRecyclerView.setLayoutManager(new SnappingLinearLayoutManager(this));
         mRecyclerView.setAdapter(new StickyHeaderAdapter(mItemArray, this));
 //        mRecyclerView.addOnScrollListener(new RecyclerViewListener());
-        StickyHeaderDecoration decoration = new StickyHeaderDecoration(StickyHeaderAdapter.TYPE_CHAPTER);
+        StickyHeaderDecoration decoration = new StickyHeaderDecoration(true, StickyHeaderAdapter.TYPE_CHAPTER);
         mRecyclerView.addItemDecoration(decoration);
         mRecyclerView.addOnItemTouchListener(new StickyHeaderTouchListener(this, decoration, this));
+//        mRecyclerView.addOnItemTouchListener(new StickyHeaderTouchListener2(decoration));
 //        mRecyclerView.setItemAnimator(new MyDefaultItemAnimator());
         DefaultItemAnimator animator = new DefaultItemAnimator() {
             @Override
